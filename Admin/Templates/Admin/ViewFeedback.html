@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Feedback</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Feedback</td>
+                <td>User Name</td>
+            </tr>
+             {% for i in userfeedback %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{i.feedback_content}}</td>
+                <td>{{i.user_id.user_name}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form> <br><br>
+     <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Feedback</td>
+                <td>Artist Name</td>
+            </tr>
+             {% for i in artistfeedback %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{i.feedback_content}}</td>
+                <td>{{i.artist_id.artist_name}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Card No</td>
+                <td><input type="text" name="txt_cardno" id="txt_cardno" required></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input required type="text" name="txt_name" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"/></td>
+            </tr>
+            <tr>
+                <td>Expiry Date</td>
+                <td><input type="date" name="txt_date" id="txt_date" required></td>
+            </tr>
+            <tr>
+                <td>CVV</td>
+                <td><input type="text" name="txt_cvv" id="txt_cvv" required></td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td><input type="text" name="txt_amount" id="txt_amount" required></td>
+            </tr>
+            <tr> 
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'User:MyBooking' %}"
+</script>
+{% endif %}

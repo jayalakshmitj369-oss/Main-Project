@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Booking</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Artwork Details</td>
+                <td>Photo</td>
+                <td>Price</td>
+                <td>Date</td>
+                <td>Status</td>
+            </tr>
+            {% for i in bookData %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.artwork_id.artwork_details}}</td>
+                <td><img src="{{i.artwork_id.artwork_photo.url}}" width="150" alt=""></td>
+                <td>{{i.booking_amount}}</td>
+                <td>{{i.booking_date}}</td>
+                <td>{% if i.booking_status == 1 %} booking Completed
+                    {% elif i.booking_status == 2 %} Item Packed
+                    {% elif i.booking_status == 3 %} Item Send
+                    {% elif i.booking_status == 4 %} Item Delivered
+                    <a href="{% url 'User:rating' i.artwork_id.artist.id %}">Rating</a>
+
+                    {% elif i.booking_status == 0 %} <a href="{% url 'User:Payment' i.id %}"> Payment</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>

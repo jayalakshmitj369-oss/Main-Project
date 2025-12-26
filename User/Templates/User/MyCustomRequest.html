@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Customer Request</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Artist Name</td>
+                <td>Email</td>
+                <td>File</td>
+                <td>Amount</td>
+                <td>Details</td>
+                <td>Action</td>
+            </tr>
+            {% for i in customData %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.artist.artist_name}}</td>
+                <td>{{i.artist.artist_email}}</td>
+                <td>{{i.customization_file}}</td>
+                <td>{{i.customization_amount}}</td>
+                <td>{{i.customization_details}}</td>
+                <td>
+                    {% if i.customization_status == 0 %} Pending
+                    {% elif i.customization_status == 1 %} Accepted
+                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
+                    <a href="{% url 'User:Accept' i.id %}">Accept</a>
+                    <a href="{% url 'User:Reject' i.id %}">Reject</a>
+                    {% elif i.customization_status == 3 %} Confirmed   
+                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
+
+                    {% elif i.customization_status == 2 %} Rejected
+                    {% elif i.customization_status == 5 %} Work Started
+                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
+
+                    {% elif i.customization_status == 6 %} Work Ended
+                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
+
+                    {% elif i.customization_status == 7 %} Work Delivered
+                    <a href="{% url 'User:rating' i.artist.id %}">Rating</a>
+
+                    {% endif %}
+                    
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location="{% url 'User:MyCustomRequest' %}"
+</script>
+{% endif %}

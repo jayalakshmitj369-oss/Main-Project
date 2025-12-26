@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork</title>
+</head>
+<body>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="txt_title" id="txt_title"></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id="file_photo"></td>
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><textarea name="txt_details" id="txt_details"></textarea></td>
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td><input type="text" name="txt_price" id="txt_price"></td>
+            </tr>
+            <tr>
+                <td>Art Type</td>
+                <td><select name="sel_arttype" id="sel_arttype">
+                    <option value="">-----select-----</option>
+                    {% for i in arttypeData %}
+                    <option value="{{i.id}}">{{i.arttype_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Art Subtype</td>
+                <td><select name="sel_artsubtype" id="sel_artsubtype">
+                    <option value="">-----select-----</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="submit"></td>
+            </tr>
+        </table>
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Title</td>
+                <td>Photo</td>
+                <td>Details</td>
+                <td>Price</td>
+                <td>Art Type</td>
+                <td>Art Subtype</td>
+                <td>Action</td>
+            </tr>
+            {% for i in artworkData %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.artwork_title}}</td>
+                <td><img src="{{i.artwork_photo.url}}" width="150" alt=""></td>
+                <td>{{i.artwork_details}}</td>
+                <td>{{i.artwork_price}}</td>
+                <td>{{i.artsubtype_id.arttype.arttype_name}}</td>
+                <td>{{i.artsubtype_id.artsubtype_name}}</td>
+                <td><a href="{% url 'Artist:DeleteArtwork' i.id %}">Delete</a> <br>
+                    <a href="{% url 'Artist:GalleryArtwork' i.id %}">Gallery</a> 
+                </td>
+            </tr> 
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location = "{% url 'Artist:Artwork' %}"
+</script>
+{%  endif %}
+</html>
+
+<!-- jQuery & AJAX -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_arttype").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Artist:AjaxSubtype' %}";
+        $.ajax({
+            url: ur,
+            data: { did: did },
+            success: function (data) {
+                $("#sel_artsubtype").html(data);
+            },
+        });
+    });
+</script>

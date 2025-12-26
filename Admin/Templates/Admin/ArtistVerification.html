@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Verification</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h2>New Artists</h2>
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Address</td>
+                <td>District</td>
+                <td>Place</td>
+                <td>Photo</td>
+                <td>Proof</td>
+                <td>Action</td>
+            </tr>
+            {% for i in pending %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.artist_name}}</td>
+                <td>{{i.artist_email}}</td>
+                <td>{{i.artist_contact}}</td>
+                <td>{{i.artist_address}}</td>
+                <td>{{i.place.district.district_name}}</td>
+                <td>{{i.place.place_name}}</td>
+                <td><img src="{{i.artist_photo.url}}" width="150" alt=""></td>
+                <td><img src="{{i.artist_proof.url}}" width="150" alt=""></td>
+                <td><a href="{% url 'Admin:ArtistAccept' i.id %}">Accept | <a href="{% url 'Admin:ArtistReject' i.id %}">Reject</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+
+        <table border="2">
+            <h1>Verified Artist</h1>
+            <tr>
+                <td>Sl No</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Address</td>
+                <td>District</td>
+                <td>Place</td>
+                <td>Photo</td>
+                <td>Proof</td>
+                <td>Action</td>
+            </tr>
+            {% for i in accepted %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.artist_name}}</td>
+                <td>{{i.artist_email}}</td>
+                <td>{{i.artist_contact}}</td>
+                <td>{{i.artist_address}}</td>
+                <td>{{i.place.district.district_name}}</td>
+                <td>{{i.place.place_name}}</td>
+                <td><img src="{{i.artist_photo.url}}" width="150" alt=""></td>
+                <td><img src="{{i.artist_proof.url}}" width="150" alt=""></td>
+                <td><a href="{% url 'Admin:ArtistReject' i.id %}">Reject</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <table border="2">
+            <h1>Rejected Artist</h1>
+            <tr>
+                <td>Sl No</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Address</td>
+                <td>District</td>
+                <td>Place</td>
+                <td>Photo</td>
+                <td>Proof</td>
+                <td>Action</td>
+            </tr>
+            {% for i in rejected %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.artist_name}}</td>
+                <td>{{i.artist_email}}</td>
+                <td>{{i.artist_contact}}</td>
+                <td>{{i.artist_address}}</td>
+                <td>{{i.place.district.district_name}}</td>
+                <td>{{i.place.place_name}}</td>
+                <td><img src="{{i.artist_photo.url}}" width="150" alt=""></td>
+                <td><img src="{{i.artist_proof.url}}" width="150" alt=""></td>
+                <td><a href="{% url 'Admin:ArtistAccept' i.id %}">Accept</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    
+</body>
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location="{% url 'Admin:ArtistVerification' %}"
+</script>
+{% endif %}

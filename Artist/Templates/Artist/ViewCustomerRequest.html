@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Customer Request</title>
+</head>
+
+<body>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>User Name</td>
+                <td>Contact</td>
+                <td>File</td>
+                <td>Amount</td>
+                <td>Details</td>
+                <td>Action</td>
+            </tr>
+            {% for i in customData %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.user_id.user_name}}</td>
+                <td>{{i.user_id.user_contact}}</td>
+                <td><img src="{{i.customization_file.url}}" width="150" alt=""></td>
+                <td>{{i.customization_amount}}</td>
+                <td>{{i.customization_details}}</td>
+                <td>
+                    {% if i.customization_status == 0 %}
+                             <a href="{% url 'Artist:Amount' i.id %}">Accept</a> | <a
+                        href="{% url 'Artist:Reject' i.id %}">Reject</a> <br>
+                    {% elif i.customization_status == 1 %}
+                    Waiting For User Confirmation
+                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+                    {% elif i.customization_status == 2 %}
+                    Rejected
+                    {% elif i.customization_status == 3 %}
+                    User Confirmed
+                     <a href="{% url 'Artist:WorkUpdate' i.id  5 %}">Start</a>
+                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+
+                    {% elif i.customization_status == 4 %}
+                    User Rejected
+                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+                    
+           
+
+                    {% elif i.customization_status == 5 %} Work Start 
+                    <a href="{% url 'Artist:WorkUpdate' i.id  6 %}">End</a> <br>
+                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+
+                    {% elif i.customization_status == 6 %} Work End<a
+                        href="{% url 'Artist:WorkUpdate' i.id  7 %}">Delivered</a> <br>
+                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+
+                    {% elif i.customization_status == 7 %} Work Delivered
+                    {% else %}
+                    <a href="{% url 'Artist:WorkUpdate' i.id  5 %}">Start</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+
+</body>
+
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location = "{% url 'Artist:ViewCustomerRequest' %}"
+</script>
+{% endif %}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Artwork</title>
+</head>
+
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Title</td>
+                <td>Photo</td>
+                <td>Details</td>
+                <td>Price</td>
+                <td>Art Type</td>
+                <td>Art Subtype</td>
+                <td>Action</td>
+            </tr>
+            {% for i in artworkData %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.artwork_title}}</td>
+                <td><img src="{{i.artwork_photo.url}}"  width="150"></td>
+                <td>{{i.artwork_details}}</td>
+                <td>{{i.artwork_price}}</td>
+                <td>{{i.artsubtype_id.arttype.arttype_name}}</td>
+                <td>{{i.artsubtype_id.artsubtype_name}}</td>
+                <td>
+                    <a href="{% url 'User:ViewArtist' i.id %}">View Artist</a><br><br>
+                    <a href="{% url 'User:ViewGallery' i.id %}">View Gallery</a><br><br>
+                    <a href="{% url 'User:BookNow' i.id %}">Book Now</a><br><br>
+
+                    {% if i.is_liked %}
+                    <a href="{% url 'User:Dislike' i.id %}">Dislike</a>
+                    {% else %}
+                    <a href="{% url 'User:Like' i.id %}">Like</a>
+                    {% endif %}
+
+                    <span>{{ i.like_count }} Likes</span><br><br>
+
+                    <a href="{% url 'User:Comment' i.id %}">Comment</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+
+    </form>
+
+
+</body>
+
+</html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'User:MyBooking' %}"
+</script>
+{% endif %}

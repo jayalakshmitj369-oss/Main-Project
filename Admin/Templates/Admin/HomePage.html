@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+    Welcome {{Admin.Admin_name}}<br>
+    <a href="{% url 'Admin:District' %}">District</a><br>
+    <a href="{% url 'Admin:Place' %}">Place</a><br>
+    <a href="{% url 'Admin:ArtistVerification' %}">Artist Verification</a><br>
+    <a href="{% url 'Admin:ArtSubType' %}">Art Subtype</a><br>
+    <a href="{% url 'Admin:ArtType' %}">Art Type</a><br>
+    <a href="{% url 'Admin:Category' %}">Category</a><br>
+    <a href="{% url 'Admin:Subcategory' %}">Subcategory</a><br>
+    <a href="{% url 'Admin:UserList' %}">User List</a><br>
+    <a href="{% url 'Admin:ViewComplaint' %}">View Complaint</a><br>
+    <a href="{% url 'Admin:ViewFeedback' %}">View Feedback</a>
+    
+</body>
+</html>

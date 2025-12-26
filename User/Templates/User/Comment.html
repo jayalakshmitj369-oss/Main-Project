@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Comment</td>
+                <td><textarea name="txt_comment" id="txt_comment" required></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+     <table border="2">
+        <tr>
+            <td>Sl No</td>
+            <td>Comment</td>
+            <td>Date</td>
+            <td>User Name</td>
+        </tr>
+        {% for i in commentData %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.comment_content}}</td>
+            <td>{{i.comment_date}}</td>
+            <td>{{i.user_id.user_name}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+</body>
+{% if msg %}
+<script>
+     alert("{{msg}}")
+    window.location="{% url 'User:ViewArtwork' %}"
+</script>
+{% endif %}
+</html>

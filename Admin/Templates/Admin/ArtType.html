@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtType</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td>Art Type</td>
+                <td><input type="text" name="txt_arttypename" id="txt_arttypename"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Art Type</td>
+                <td>Action</td>
+            </tr>
+            {% for i in arttypeData %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.arttype_name }}</td>
+                <td><a href="{% url 'Admin:DeleteArtType' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    
+    
+</body>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location="{% url 'Admin:ArtType' %}"
+</script>
+{% endif %}
+</html>

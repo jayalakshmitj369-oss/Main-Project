@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Subtype</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table  border="2">
+            <tr>
+                <td>SubType</td>
+                <td><input type="text" name="txt_subtype" id="txt_subtype"></td>
+            </tr>
+            <tr>
+                <td>Art Type</td>
+                <td><select name="sel_arttype" id="sel_arttype">
+                     <option value="">------Select------</option>
+                    {% for i in arttypeData %}
+                        <option {% if artsubtypeOne.arttype_id == i.id %} selected {% endif %} value="{{i.id}}">{{i.arttype_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+        <table border="2">
+            <tr>
+                <td>Sl No</td>
+                <td>Art Type</td>
+                <td>SubType</td>
+                <td>Action</td>
+            </tr>
+            {% for i in artsubtypeData %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.arttype.arttype_name}}</td>
+                <td>{{i.artsubtype_name}}</td>
+                <td><a href="{% url 'Admin:DeleteArtSubType' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    
+</body>
+{% if msg %}
+<script>
+    alert("{{msg}}")
+    window.location="{% url 'Admin:ArtSubType' %}"
+</script>
+{% endif %}
+</html>

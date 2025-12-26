@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Gallery</title>
+</head>
+<body>
+    {% csrf_token %}
+    <table border="2">
+        <tr>
+            <td>Sl No</td>
+            <td>Files</td>
+        </tr>
+        {% for i in viewgalleryData %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><img src="{{i.gallery_file.url}}"  width="150" alt=""></td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+</body>
+</html>

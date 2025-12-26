@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Artist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <style>
+       .text-warning {
+            color: orange;
+        }   
+</style>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table border="2">
+            <tr>
+                <td colspan="2"><img src="{{artistData.artist_photo.url}}" width="150" alt=""></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{artistData.artist_name}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{artistData.artist_email}}</td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{artistData.artist_contact}}</td>
+            </tr>
+            <tr>
+                <td>Rating</td>
+                <td>
+                     <div>
+                {% for k in ar %} {% if k <= parry %} <i class="fa-solid fa-star text-warning"></i>
+                    {% else %}
+                    <i class="fa-solid fa-star star-light"></i>
+                    {% endif %} {% endfor %}
+            </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><a href="{% url 'User:CustomRequest' artistData.id %}">Custom Request</a> </td>
+            </tr>
+        </table>
+    </form>
+    
+</body>
+</html>
