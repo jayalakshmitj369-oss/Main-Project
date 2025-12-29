@@ -1,44 +1,198 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Card No</td>
-                <td><input type="text" name="txt_cardno" id="txt_cardno" required></td>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td><input required type="text" name="txt_name" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"/></td>
-            </tr>
-            <tr>
-                <td>Expiry Date</td>
-                <td><input type="date" name="txt_date" id="txt_date" required></td>
-            </tr>
-            <tr>
-                <td>CVV</td>
-                <td><input type="text" name="txt_cvv" id="txt_cvv" required></td>
-            </tr>
-            <tr>
-                <td>Amount</td>
-                <td><input type="text" name="txt_amount" id="txt_amount" required></td>
-            </tr>
-            <tr> 
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-</body>
-</html>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== FULL WIDTH FIX ===== */
+.payment-fullwidth {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* ===== PAGE BACKGROUND ===== */
+.payment-art-page {
+    min-height: 100vh;
+    padding: 90px 25px;
+
+    background:
+        radial-gradient(circle at top left, rgba(255,0,150,0.35), transparent 45%),
+        radial-gradient(circle at bottom right, rgba(0,255,255,0.35), transparent 45%),
+        linear-gradient(180deg, #050505, #0b0b0b);
+}
+
+/* ===== TITLE ===== */
+.payment-art-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffffff;
+    margin-bottom: 55px;
+}
+
+/* ===== CARD ===== */
+.payment-art-card {
+    max-width: 460px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 24px;
+    position: relative;
+
+    background: linear-gradient(145deg, #111111, #1a1a1a);
+
+    box-shadow:
+        0 25px 55px rgba(0,0,0,0.85),
+        0 0 45px rgba(255,0,150,0.35),
+        0 0 45px rgba(0,255,255,0.35);
+}
+
+/* ===== GLOW ORB ===== */
+.payment-art-card::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, #ff0096, transparent 70%);
+    opacity: 0.4;
+    border-radius: 50%;
+}
+
+/* ===== FORM GROUP ===== */
+.payment-art-group {
+    margin-bottom: 22px;
+}
+
+.payment-art-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #cccccc;
+    text-transform: uppercase;
+}
+
+/* ===== INPUT ===== */
+.payment-art-input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #ffffff;
+
+    background: rgba(255,255,255,0.06);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.payment-art-input:focus {
+    background: rgba(255,255,255,0.1);
+    box-shadow:
+        inset 0 0 0 1px #ff0096,
+        0 0 15px rgba(255,0,150,0.4);
+}
+
+/* ===== ROW ===== */
+.payment-art-row {
+    display: flex;
+    gap: 15px;
+}
+
+/* ===== BUTTON ===== */
+.payment-art-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 40px;
+    border: none;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    color: #000;
+
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.payment-art-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(255,140,0,0.6);
+}
+
+/* ===== SECURE TEXT ===== */
+.payment-art-secure {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 0.5px;
+}
+</style>
+
+<div class="payment-fullwidth">
+    <div class="payment-art-page">
+
+        <div class="payment-art-title">
+            Secure Art Payment
+        </div>
+
+        <div class="payment-art-card">
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                <div class="payment-art-group">
+                    <label class="payment-art-label">Card Number</label>
+                    <input type="text" name="txt_cardno" class="payment-art-input" required>
+                </div>
+
+                <div class="payment-art-group">
+                    <label class="payment-art-label">Card Holder Name</label>
+                    <input type="text" name="txt_name"
+                           class="payment-art-input"
+                           required
+                           pattern="^[A-Z]+[a-zA-Z ]*$"
+                           title="Name Allows Only Alphabets, Spaces and First Letter Must Be Capital">
+                </div>
+
+                <div class="payment-art-row">
+                    <div class="payment-art-group" style="flex:1;">
+                        <label class="payment-art-label">Expiry Date</label>
+                        <input type="date" name="txt_date" class="payment-art-input" required>
+                    </div>
+
+                    <div class="payment-art-group" style="flex:1;">
+                        <label class="payment-art-label">CVV</label>
+                        <input type="text" name="txt_cvv" class="payment-art-input" required>
+                    </div>
+                </div>
+
+                <div class="payment-art-group">
+                    <label class="payment-art-label">Amount</label>
+                    <input type="text" name="txt_amount" class="payment-art-input" required>
+                </div>
+
+                <button type="submit" class="payment-art-btn">
+                    Complete Payment
+                </button>
+
+                <div class="payment-art-secure">
+                    🔒 100% Secure Art Transaction
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
 {% if msg %}
 <script>
     alert("{{msg}}");
-    window.location = "{% url 'User:MyBooking' %}"
+    window.location = "{% url 'User:MyBooking' %}";
 </script>
 {% endif %}
+
+{% endblock %}

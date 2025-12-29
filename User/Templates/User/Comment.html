@@ -1,45 +1,182 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comment</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Comment</td>
-                <td><textarea name="txt_comment" id="txt_comment" required></textarea></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-     <table border="2">
-        <tr>
-            <td>Sl No</td>
-            <td>Comment</td>
-            <td>Date</td>
-            <td>User Name</td>
-        </tr>
-        {% for i in commentData %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.comment_content}}</td>
-            <td>{{i.comment_date}}</td>
-            <td>{{i.user_id.user_name}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    
-</body>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== FULL WIDTH FIX ===== */
+.comment-fullwidth {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* ===== PAGE BACKGROUND ===== */
+.comment-art-page {
+    min-height: 100vh;
+    padding: 90px 25px;
+
+    background:
+        radial-gradient(circle at top left, rgba(255,0,150,0.35), transparent 45%),
+        radial-gradient(circle at bottom right, rgba(0,255,255,0.35), transparent 45%),
+        linear-gradient(180deg, #050505, #0b0b0b);
+}
+
+/* ===== TITLE ===== */
+.comment-art-title {
+    text-align: center;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffffff;
+    margin-bottom: 50px;
+}
+
+/* ===== COMMENT FORM CARD ===== */
+.comment-art-form-card {
+    max-width: 600px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 26px;
+    background: linear-gradient(145deg, #111, #1b1b1b);
+    box-shadow:
+        0 25px 55px rgba(0,0,0,0.85),
+        0 0 45px rgba(255,0,150,0.3),
+        0 0 45px rgba(0,255,255,0.3);
+    margin-bottom: 70px;
+}
+
+/* ===== FORM LABEL ===== */
+.comment-art-label {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ddd;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* ===== TEXTAREA ===== */
+.comment-art-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 14px;
+    border-radius: 16px;
+    resize: none;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.comment-art-textarea:focus {
+    box-shadow:
+        inset 0 0 0 1px #ff0096,
+        0 0 15px rgba(255,0,150,0.4);
+}
+
+/* ===== BUTTON ===== */
+.comment-art-btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 40px;
+    border: none;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    color: #000;
+    background: linear-gradient(135deg, #ff0096, #00ffff);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comment-art-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(255,0,150,0.6);
+}
+
+/* ===== COMMENT LIST ===== */
+.comment-art-list {
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* ===== COMMENT CARD ===== */
+.comment-art-item {
+    background: linear-gradient(145deg, #101010, #181818);
+    padding: 22px 26px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+    border-left: 4px solid #ff0096;
+}
+
+/* ===== COMMENT HEADER ===== */
+.comment-art-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.comment-art-user {
+    font-weight: 700;
+    color: #ffd700;
+    font-size: 14px;
+}
+
+.comment-art-date {
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* ===== COMMENT TEXT ===== */
+.comment-art-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ddd;
+}
+</style>
+
+<div class="comment-fullwidth">
+    <div class="comment-art-page">
+
+        <div class="comment-art-title">
+            Artwork Comments
+        </div>
+
+        <!-- Comment Form -->
+        <div class="comment-art-form-card">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label class="comment-art-label">Share your thoughts</label>
+                <textarea name="txt_comment" class="comment-art-textarea" required></textarea>
+                <button type="submit" class="comment-art-btn">Post Comment</button>
+            </form>
+        </div>
+
+        <!-- Comment List -->
+        <div class="comment-art-list">
+            {% for i in commentData %}
+            <div class="comment-art-item">
+                <div class="comment-art-header">
+                    <div class="comment-art-user">{{ i.user_id.user_name }}</div>
+                    <div class="comment-art-date">{{ i.comment_date }}</div>
+                </div>
+                <div class="comment-art-text">
+                    {{ i.comment_content }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
 {% if msg %}
 <script>
-     alert("{{msg}}")
-    window.location="{% url 'User:ViewArtwork' %}"
+    alert("{{msg}}");
+    window.location = "{% url 'User:ViewArtwork' %}";
 </script>
 {% endif %}
-</html>
+
+{% endblock %}

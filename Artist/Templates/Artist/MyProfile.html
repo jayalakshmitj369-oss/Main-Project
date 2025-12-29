@@ -1,46 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td colspan="2"><img src="{{artist.artist_photo.url}}" width="150" alt="" ></td>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td>{{artist.artist_name}}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>{{artist.artist_email}}</td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td>{{artist.artist_contact}}</td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td>{{artist.artist_address}}</td>
-            </tr>
-            <tr>
-                <td>District</td>
-                <td>{{artist.place.district.district_name}}</td>
-            </tr>
-            <tr>
-                <td>Place</td>
-                <td>{{artist.place.place_name}}</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="=center"><a href="{% url 'Artist:EditProfile' %}">Edit Profile</a> | <a href="{% url 'Artist:ChangePassword' %}">Change Password</a></td>
-            </tr>
-        </table>
-    </form>
-    
-</body>
-</html>
+{% extends 'Artist/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== Full Page Dark Wrapper ===== */
+.artist-profile-full {
+    width: 100vw;
+    min-height: 100vh;
+    margin-left: calc(-50vw + 50%);
+    background: #000;
+    padding: 80px 20px;
+    color: #fff;
+}
+
+/* Artistic background glow */
+.artist-profile-full::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at top left, rgba(0,255,255,0.15), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(255,0,255,0.15), transparent 40%);
+    z-index: 0;
+}
+
+/* ===== Profile Card ===== */
+.artist-profile-card {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: auto;
+    background: rgba(0,0,0,0.8);
+    border-radius: 25px;
+    padding: 40px;
+    border: 1px solid rgba(0,255,255,0.4);
+    box-shadow: 0 0 40px rgba(0,255,255,0.2);
+}
+
+/* ===== Profile Header ===== */
+.artist-profile-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.artist-profile-img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #0ff;
+    box-shadow: 0 0 20px #0ff;
+}
+
+.artist-profile-name {
+    margin-top: 15px;
+    font-size: 26px;
+    color: #0ff;
+    letter-spacing: 1px;
+}
+
+/* ===== Info Grid ===== */
+.artist-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.artist-info-box {
+    background: rgba(0,0,0,0.7);
+    border: 1px solid rgba(0,255,255,0.3);
+    padding: 18px;
+    border-radius: 15px;
+}
+
+.artist-info-label {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.artist-info-value {
+    font-size: 16px;
+    color: #fff;
+}
+
+/* ===== Action Buttons ===== */
+.artist-profile-actions {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.artist-profile-actions a {
+    text-decoration: none;
+    padding: 14px 28px;
+    margin: 10px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: #000;
+    background: linear-gradient(90deg, #0ff, #f0f);
+    transition: 0.3s;
+}
+
+.artist-profile-actions a:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #0ff;
+}
+</style>
+
+<div class="artist-profile-full">
+
+    <div class="artist-profile-card">
+
+        <div class="artist-profile-header">
+            <img src="{{artist.artist_photo.url}}" class="artist-profile-img" alt="Artist Photo">
+            <div class="artist-profile-name">{{artist.artist_name}}</div>
+        </div>
+
+        <div class="artist-profile-grid">
+
+            <div class="artist-info-box">
+                <div class="artist-info-label">Email</div>
+                <div class="artist-info-value">{{artist.artist_email}}</div>
+            </div>
+
+            <div class="artist-info-box">
+                <div class="artist-info-label">Contact</div>
+                <div class="artist-info-value">{{artist.artist_contact}}</div>
+            </div>
+
+            <div class="artist-info-box">
+                <div class="artist-info-label">Address</div>
+                <div class="artist-info-value">{{artist.artist_address}}</div>
+            </div>
+
+            <div class="artist-info-box">
+                <div class="artist-info-label">District</div>
+                <div class="artist-info-value">{{artist.place.district.district_name}}</div>
+            </div>
+
+            <div class="artist-info-box">
+                <div class="artist-info-label">Place</div>
+                <div class="artist-info-value">{{artist.place.place_name}}</div>
+            </div>
+
+        </div>
+
+        <div class="artist-profile-actions">
+            <a href="{% url 'Artist:EditProfile' %}">Edit Profile</a>
+            <a href="{% url 'Artist:ChangePassword' %}">Change Password</a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,42 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Name</td>
-                <td><input required type="text" name="txt_name" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"  value="{{artist.artist_name}}"></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="email" required name="txt_email" value="{{artist.artist_email}}"></td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td><input type="text" required name="txt_contact" pattern="[7-9]{1}[0-9]{9}" 
-                title="Phone number with 7-9 and remaing 9 digit with 0-9" value="{{artist.artist_contact}}"></td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td><input type="text" name="txt_address" id="txt_address" value="{{artist.artist_address}}" required></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Update"></td>
-            </tr>
-        </table>
-    </form>
-    
-</body>
-</html>
+{% extends 'Artist/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== PAGE RESET ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    overflow-x: hidden;
+}
+
+/* ===== FULL PAGE CONTAINER ===== */
+.artist-editprofile-page {
+    width: 100vw;
+    min-height: 100vh;
+    margin-left: calc(-50vw + 50%);
+    padding: 100px 20px;
+    background: #000;
+    position: relative;
+    color: #fff;
+}
+
+/* ===== GLOW BACKGROUND ===== */
+.artist-editprofile-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at top left, rgba(0,255,255,0.15), transparent 45%),
+        radial-gradient(circle at bottom right, rgba(255,0,255,0.15), transparent 45%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ===== CARD ===== */
+.artist-editprofile-card {
+    max-width: 550px;
+    margin: auto;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(15px);
+    border-radius: 22px;
+    padding: 45px 40px;
+    box-shadow: 0 0 45px rgba(0,255,255,0.25);
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== TITLE ===== */
+.artist-editprofile-title {
+    text-align: center;
+    font-size: 30px;
+    letter-spacing: 2px;
+    margin-bottom: 35px;
+}
+
+/* ===== FORM ===== */
+.artist-editprofile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.artist-editprofile-group label {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.artist-editprofile-group input {
+    width: 100%;
+    padding: 12px 14px;
+    background: #000;
+    border: 1px solid #555;
+    border-radius: 12px;
+    color: #fff;
+    outline: none;
+}
+
+.artist-editprofile-group input:focus {
+    border-color: #0ff;
+    box-shadow: 0 0 10px rgba(0,255,255,0.5);
+}
+
+/* ===== BUTTON ===== */
+.artist-editprofile-btn {
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(45deg, #00ffff, #ff00ff);
+    color: #000;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.artist-editprofile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0,255,255,0.6);
+}
+</style>
+
+<div class="artist-editprofile-page">
+    <div class="artist-editprofile-card">
+
+        <h2 class="artist-editprofile-title">✏ Edit Profile</h2>
+
+        <form method="POST" class="artist-editprofile-form">
+            {% csrf_token %}
+
+            <div class="artist-editprofile-group">
+                <label>Name</label>
+                <input type="text" name="txt_name"
+                       value="{{artist.artist_name}}"
+                       required
+                       pattern="^[A-Z]+[a-zA-Z ]*$"
+                       title="First letter must be capital">
+            </div>
+
+            <div class="artist-editprofile-group">
+                <label>Email</label>
+                <input type="email" name="txt_email"
+                       value="{{artist.artist_email}}" required>
+            </div>
+
+            <div class="artist-editprofile-group">
+                <label>Contact</label>
+                <input type="text" name="txt_contact"
+                       value="{{artist.artist_contact}}"
+                       pattern="[7-9]{1}[0-9]{9}"
+                       title="Valid Indian mobile number" required>
+            </div>
+
+            <div class="artist-editprofile-group">
+                <label>Address</label>
+                <input type="text" name="txt_address"
+                       value="{{artist.artist_address}}" required>
+            </div>
+
+            <button type="submit" class="artist-editprofile-btn">
+                Update Profile
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'Artist:MyProfile' %}"
+    alert("{{msg}}");
+    window.location = "{% url 'Artist:MyProfile' %}";
 </script>
 {% endif %}
+
+{% endblock %}

@@ -1,63 +1,215 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Customer Request</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Artist Name</td>
-                <td>Email</td>
-                <td>File</td>
-                <td>Amount</td>
-                <td>Details</td>
-                <td>Action</td>
-            </tr>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== FULL WIDTH FIX ===== */
+.customreq-fullwidth {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* ===== PAGE BACKGROUND ===== */
+.customreq-page {
+    min-height: 100vh;
+    padding: 90px 30px;
+    background:
+        radial-gradient(circle at left top, rgba(255,0,150,0.35), transparent 45%),
+        radial-gradient(circle at right bottom, rgba(0,255,255,0.35), transparent 45%),
+        linear-gradient(180deg, #050505, #0b0b0b);
+}
+
+/* ===== TITLE ===== */
+.customreq-title {
+    text-align: center;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 60px;
+}
+
+/* ===== GRID ===== */
+.customreq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 30px;
+}
+
+/* ===== CARD ===== */
+.customreq-card {
+    background: linear-gradient(145deg, #111, #1b1b1b);
+    border-radius: 24px;
+    padding: 26px;
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.8),
+        0 0 25px rgba(255,0,150,0.25),
+        0 0 25px rgba(0,255,255,0.25);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.customreq-card:hover {
+    transform: translateY(-6px);
+}
+
+/* ===== ARTIST NAME ===== */
+.customreq-artist {
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffd700;
+    margin-bottom: 6px;
+}
+
+/* ===== EMAIL ===== */
+.customreq-email {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 15px;
+}
+
+/* ===== INFO ===== */
+.customreq-info {
+    font-size: 14px;
+    color: #ddd;
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+/* ===== AMOUNT ===== */
+.customreq-amount {
+    font-weight: 800;
+    color: #00ffff;
+    margin-top: 10px;
+}
+
+/* ===== STATUS ===== */
+.customreq-status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 15px 0;
+}
+
+/* Status colors */
+.status-pending { background: #555; color: #fff; }
+.status-accepted { background: #00ffff; color: #000; }
+.status-confirmed { background: #ffd700; color: #000; }
+.status-rejected { background: #ff4444; color: #fff; }
+.status-working { background: #ff0096; color: #fff; }
+.status-delivered { background: #00ff88; color: #000; }
+
+/* ===== ACTION BUTTONS ===== */
+.customreq-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.customreq-btn {
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #000;
+    background: linear-gradient(135deg, #ff0096, #00ffff);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.customreq-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255,0,150,0.6);
+}
+
+.customreq-btn.secondary {
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+}
+
+.customreq-btn.danger {
+    background: linear-gradient(135deg, #ff4444, #ff0000);
+    color: #fff;
+}
+</style>
+
+<div class="customreq-fullwidth">
+    <div class="customreq-page">
+
+        <div class="customreq-title">
+            My Custom Requests
+        </div>
+
+        <div class="customreq-grid">
             {% for i in customData %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.artist.artist_name}}</td>
-                <td>{{i.artist.artist_email}}</td>
-                <td>{{i.customization_file}}</td>
-                <td>{{i.customization_amount}}</td>
-                <td>{{i.customization_details}}</td>
-                <td>
-                    {% if i.customization_status == 0 %} Pending
-                    {% elif i.customization_status == 1 %} Accepted
-                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
-                    <a href="{% url 'User:Accept' i.id %}">Accept</a>
-                    <a href="{% url 'User:Reject' i.id %}">Reject</a>
-                    {% elif i.customization_status == 3 %} Confirmed   
-                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
+            <div class="customreq-card">
 
-                    {% elif i.customization_status == 2 %} Rejected
-                    {% elif i.customization_status == 5 %} Work Started
-                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
+                <div class="customreq-artist">{{ i.artist.artist_name }}</div>
+                <div class="customreq-email">{{ i.artist.artist_email }}</div>
 
-                    {% elif i.customization_status == 6 %} Work Ended
-                    <a href="{% url 'User:chatpage' i.artist.id %}">Chat</a>
+                <div class="customreq-info">
+                    <strong>Details:</strong> {{ i.customization_details }}
+                </div>
 
-                    {% elif i.customization_status == 7 %} Work Delivered
-                    <a href="{% url 'User:rating' i.artist.id %}">Rating</a>
+                <div class="customreq-info">
+                    <strong>File:</strong> {{ i.customization_file }}
+                </div>
 
+                <div class="customreq-amount">
+                    Amount: ₹{{ i.customization_amount }}
+                </div>
+
+                {% if i.customization_status == 0 %}
+                    <span class="customreq-status status-pending">Pending</span>
+
+                {% elif i.customization_status == 1 %}
+                    <span class="customreq-status status-accepted">Accepted</span>
+
+                {% elif i.customization_status == 3 %}
+                    <span class="customreq-status status-confirmed">Confirmed</span>
+
+                {% elif i.customization_status == 2 %}
+                    <span class="customreq-status status-rejected">Rejected</span>
+
+                {% elif i.customization_status == 5 %}
+                    <span class="customreq-status status-working">Work Started</span>
+
+                {% elif i.customization_status == 6 %}
+                    <span class="customreq-status status-working">Work Ended</span>
+
+                {% elif i.customization_status == 7 %}
+                    <span class="customreq-status status-delivered">Work Delivered</span>
+                {% endif %}
+
+                <div class="customreq-actions">
+
+                    {% if i.customization_status == 1 %}
+                        <a href="{% url 'User:chatpage' i.artist.id %}" class="customreq-btn">Chat</a>
+                        <a href="{% url 'User:Accept' i.id %}" class="customreq-btn secondary">Accept</a>
+                        <a href="{% url 'User:Reject' i.id %}" class="customreq-btn danger">Reject</a>
+
+                    {% elif i.customization_status == 3 or i.customization_status == 5 or i.customization_status == 6 %}
+                        <a href="{% url 'User:chatpage' i.artist.id %}" class="customreq-btn">Chat</a>
+
+                    {% elif i.customization_status == 7 %}
+                        <a href="{% url 'User:rating' i.artist.id %}" class="customreq-btn secondary">Rating</a>
                     {% endif %}
-                    
-                </td>
-            </tr>
+
+                </div>
+
+            </div>
             {% endfor %}
-        </table>
-    </form>
-    
-</body>
-</html>
+        </div>
+
+    </div>
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'User:MyCustomRequest' %}"
+    alert("{{msg}}");
+    window.location = "{% url 'User:MyCustomRequest' %}";
 </script>
 {% endif %}
+
+{% endblock %}

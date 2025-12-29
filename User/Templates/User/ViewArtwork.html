@@ -1,64 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'User/Header.html' %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Artwork</title>
-</head>
+<style>
+/* ===== BREAK HEADER CONTAINER ===== */
+.full-width-art {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
 
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Title</td>
-                <td>Photo</td>
-                <td>Details</td>
-                <td>Price</td>
-                <td>Art Type</td>
-                <td>Art Subtype</td>
-                <td>Action</td>
-            </tr>
+/* ===== PAGE BACKGROUND ===== */
+.art-gallery-wrapper {
+    min-height: 100vh;
+    padding: 90px 40px;
+
+    background:
+        radial-gradient(circle at 0% 30%, rgba(255,0,150,0.35), transparent 45%),
+        radial-gradient(circle at 100% 70%, rgba(0,255,255,0.35), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(255,215,0,0.25), transparent 55%),
+        linear-gradient(180deg, #0a0a0a, #0a0a0a);
+}
+
+/* ===== GRID ===== */
+.art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 35px;
+}
+
+/* ===== ART CARD ===== */
+.art-card {
+    background: linear-gradient(145deg, #0c0c0c, #151515);
+    border-radius: 22px;
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 45px rgba(0,0,0,0.7),
+        0 0 30px rgba(255,0,150,0.15);
+
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.art-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 35px 65px rgba(0,0,0,0.85),
+        0 0 45px rgba(0,255,255,0.25);
+}
+
+/* IMAGE */
+.art-image-box {
+    height: 220px;
+    overflow: hidden;
+}
+
+.art-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* CONTENT */
+.art-content {
+    padding: 22px;
+}
+
+.art-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.art-type {
+    font-size: 13px;
+    color: #ff8fd6;
+    margin-bottom: 12px;
+}
+
+.art-details {
+    font-size: 14px;
+    color: #cccccc;
+    margin-bottom: 14px;
+}
+
+/* PRICE */
+.art-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+/* ACTIONS */
+.art-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.art-btn {
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #000;
+    background: linear-gradient(135deg, #ff0096, #00ffff);
+}
+
+.art-btn.secondary {
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+}
+
+.art-btn.like {
+    background: linear-gradient(135deg, #00ffcc, #00bfff);
+}
+
+.art-btn.dislike {
+    background: linear-gradient(135deg, #ff4d4d, #ff0096);
+}
+
+.art-like-count {
+    width: 100%;
+    font-size: 13px;
+    color: #bbbbbb;
+    margin-top: 8px;
+}
+</style>
+
+<div class="full-width-art">
+    <div class="art-gallery-wrapper">
+
+        <div class="art-grid">
+
             {% for i in artworkData %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.artwork_title}}</td>
-                <td><img src="{{i.artwork_photo.url}}"  width="150"></td>
-                <td>{{i.artwork_details}}</td>
-                <td>{{i.artwork_price}}</td>
-                <td>{{i.artsubtype_id.arttype.arttype_name}}</td>
-                <td>{{i.artsubtype_id.artsubtype_name}}</td>
-                <td>
-                    <a href="{% url 'User:ViewArtist' i.id %}">View Artist</a><br><br>
-                    <a href="{% url 'User:ViewGallery' i.id %}">View Gallery</a><br><br>
-                    <a href="{% url 'User:BookNow' i.id %}">Book Now</a><br><br>
+            <div class="art-card">
 
-                    {% if i.is_liked %}
-                    <a href="{% url 'User:Dislike' i.id %}">Dislike</a>
-                    {% else %}
-                    <a href="{% url 'User:Like' i.id %}">Like</a>
-                    {% endif %}
+                <div class="art-image-box">
+                    <img src="{{ i.artwork_photo.url }}" alt="Artwork">
+                </div>
 
-                    <span>{{ i.like_count }} Likes</span><br><br>
+                <div class="art-content">
+                    <div class="art-title">{{ i.artwork_title }}</div>
 
-                    <a href="{% url 'User:Comment' i.id %}">Comment</a>
-                </td>
+                    <div class="art-type">
+                        {{ i.artsubtype_id.arttype.arttype_name }} |
+                        {{ i.artsubtype_id.artsubtype_name }}
+                    </div>
 
-            </tr>
+                    <div class="art-details">
+                        {{ i.artwork_details|truncatewords:18 }}
+                    </div>
+
+                    <div class="art-price">₹ {{ i.artwork_price }}</div>
+
+                    <div class="art-actions">
+                        <a href="{% url 'User:ViewArtist' i.id %}" class="art-btn">Artist</a>
+                        <a href="{% url 'User:ViewGallery' i.id %}" class="art-btn secondary">Gallery</a>
+                        <a href="{% url 'User:BookNow' i.id %}" class="art-btn">Book</a>
+
+                        {% if i.is_liked %}
+                            <a href="{% url 'User:Dislike' i.id %}" class="art-btn dislike">Dislike</a>
+                        {% else %}
+                            <a href="{% url 'User:Like' i.id %}" class="art-btn like">Like</a>
+                        {% endif %}
+
+                        <a href="{% url 'User:Comment' i.id %}" class="art-btn secondary">Comment</a>
+                    </div>
+
+                    <div class="art-like-count">
+                        ❤️ {{ i.like_count }} Likes
+                    </div>
+                </div>
+
+            </div>
             {% endfor %}
-        </table>
 
-    </form>
+        </div>
 
+    </div>
+</div>
 
-</body>
-
-</html>
 {% if msg %}
 <script>
-    alert("{{msg}}");
-    window.location = "{% url 'User:MyBooking' %}"
+    alert("{{ msg }}");
+    window.location = "{% url 'User:MyBooking' %}";
 </script>
 {% endif %}
+
+{% endblock %}

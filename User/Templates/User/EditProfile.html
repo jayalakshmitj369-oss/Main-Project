@@ -1,42 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Name</td>
-                <td><input required type="text" name="txt_name" title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" value="{{user.user_name}}"></td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="email" required name="txt_email" value="{{user.user_email}}"></td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td><input type="text" required name="txt_contact" pattern="[7-9]{1}[0-9]{9}" 
-                title="Phone number with 7-9 and remaing 9 digit with 0-9" value="{{user.user_contact}}"/></td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td><input type="text" name="txt_address" id="txt_address" value="{{user.user_address}}" required></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="Update"></td>
-            </tr>
-        </table>
-    </form>
-    
-</body>
-</html>
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== BREAK CONTAINER LIMIT ===== */
+.full-width-reset {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* ===== FULL ART BACKGROUND ===== */
+.edit-art-canvas {
+    min-height: 100vh;
+    width: 100%;
+    padding: 100px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(circle at 0% 50%, rgba(255, 0, 150, 0.35), transparent 45%),
+        radial-gradient(circle at 100% 50%, rgba(0, 255, 255, 0.35), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(255, 215, 0, 0.25), transparent 55%),
+        linear-gradient(180deg, #0a0a0a, #0a0a0a);
+}
+
+/* ===== CARD ===== */
+.edit-art-card {
+    width: 100%;
+    max-width: 520px;
+    padding: 40px 35px;
+    border-radius: 26px;
+
+    background: linear-gradient(145deg, #0e0e0e, #151515);
+    box-shadow:
+        0 30px 60px rgba(0,0,0,0.75),
+        0 0 45px rgba(255,0,150,0.18),
+        0 0 45px rgba(0,255,255,0.18);
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* glow */
+.edit-art-card::before {
+    content: "";
+    position: absolute;
+    top: -70px;
+    left: -70px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, #ff0096, transparent 70%);
+    opacity: 0.35;
+    border-radius: 50%;
+}
+
+/* title */
+.edit-art-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 35px;
+}
+
+/* form */
+.edit-art-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.edit-art-group label {
+    color: #ddd;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.edit-art-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    outline: none;
+}
+
+.edit-art-group input:focus {
+    border-color: #ff0096;
+    box-shadow: 0 0 0 2px rgba(255,0,150,0.35);
+}
+
+/* button */
+.edit-art-btn {
+    margin-top: 25px;
+    padding: 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff0096, #00ffff);
+    color: #000;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.edit-art-btn:hover {
+    box-shadow: 0 15px 35px rgba(255,0,150,0.45);
+}
+</style>
+
+<!-- 🔥 IMPORTANT WRAPPER -->
+<div class="full-width-reset">
+    <div class="edit-art-canvas">
+
+        <div class="edit-art-card">
+            <div class="edit-art-title">Edit Artist Profile</div>
+
+            <form method="POST" class="edit-art-form">
+                {% csrf_token %}
+
+                <div class="edit-art-group">
+                    <label>Name</label>
+                    <input type="text" name="txt_name" required
+                           value="{{ user.user_name }}">
+                </div>
+
+                <div class="edit-art-group">
+                    <label>Email</label>
+                    <input type="email" name="txt_email" required
+                           value="{{ user.user_email }}">
+                </div>
+
+                <div class="edit-art-group">
+                    <label>Contact</label>
+                    <input type="text" name="txt_contact" required
+                           value="{{ user.user_contact }}">
+                </div>
+
+                <div class="edit-art-group">
+                    <label>Address</label>
+                    <input type="text" name="txt_address" required
+                           value="{{ user.user_address }}">
+                </div>
+
+                <button type="submit" class="edit-art-btn">
+                    Update Profile
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'User:MyProfile' %}"
+    alert("{{ msg }}");
+    window.location = "{% url 'User:MyProfile' %}";
 </script>
 {% endif %}
+
+{% endblock %}

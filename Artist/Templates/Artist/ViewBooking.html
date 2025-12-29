@@ -1,49 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Booking</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
+{% extends 'Artist/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== FULL PAGE BACKGROUND ===== */
+.booking-page {
+    min-height: 100vh;
+    padding: 60px 40px;
+    background:
+        radial-gradient(circle at top left, #9333ea55, transparent 40%),
+        radial-gradient(circle at bottom right, #06b6d455, transparent 40%),
+        linear-gradient(180deg, #020617, #020617);
+}
+
+/* ===== PAGE TITLE ===== */
+.page-title {
+    text-align: center;
+    color: #f8fafc;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+}
+
+/* ===== TABLE ===== */
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* HEADER */
+.booking-table th {
+    color: #94a3b8;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 16px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    text-align: left;
+}
+
+/* ROWS */
+.booking-table td {
+    color: #e5e7eb;
+    padding: 18px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    vertical-align: middle;
+}
+
+.booking-table tr:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+/* IMAGE */
+.art-img {
+    width: 130px;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+}
+
+/* STATUS */
+.status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.packed { background: #f59e0b; color: #000; }
+.shipped { background: #3b82f6; }
+.delivered { background: #22c55e; color: #000; }
+
+/* ACTION BUTTON */
+.action-btn {
+    display: inline-block;
+    padding: 7px 18px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+    .booking-table thead {
+        display: none;
+    }
+
+    .booking-table, .booking-table tbody, .booking-table tr, .booking-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .booking-table tr {
+        margin-bottom: 30px;
+    }
+
+    .booking-table td {
+        text-align: center;
+    }
+}
+</style>
+
+<div class="booking-page">
+
+    <h2 class="page-title">Artwork Bookings</h2>
+
+    <table class="booking-table">
+        <thead>
             <tr>
-                <td>Sl No</td>
-                <td>User Details</td>
-                <td>Artwork Details</td>
-                <td>Photo</td>
-                <td>Price</td>
-                <td>Date</td>
-                <td>Status</td>
+                <th>#</th>
+                <th>User</th>
+                <th>Artwork</th>
+                <th>Photo</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Status</th>
             </tr>
-             {% for i in bookData %}
+        </thead>
+
+        <tbody>
+            {% for i in bookData %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{i.user_id.user_name}}</td>
                 <td>{{i.artwork_id.artwork_details}}</td>
-                <td><img src="{{i.artwork_id.artwork_photo.url}}" width="150" alt=""></td>
-                <td>{{i.artwork_id.artwork_price}}</td>
+                <td>
+                    <img src="{{i.artwork_id.artwork_photo.url}}" class="art-img">
+                </td>
+                <td>₹ {{i.artwork_id.artwork_price}}</td>
                 <td>{{i.booking_date}}</td>
                 <td>
+                    {% if i.booking_status == 2 %}
+                        <span class="status packed">Packed</span><br>
+                        <a href="{% url 'Artist:tracking' i.id 3 %}" class="action-btn">Ship</a>
 
-                    {% if i.booking_status == 2 %} Item Packed <a href="{% url 'Artist:tracking' i.id 3 %}">Shipped</a> 
-                    {% elif i.booking_status == 3  %} Item Shipped <a href="{% url 'Artist:tracking' i.id 4 %}">Deliverd</a>
-                    {% elif i.booking_status == 4 %} Item Delivered 
-  {% else %}
-  <a href="{% url 'Artist:tracking' i.id 2 %}">Packed</a> 
+                    {% elif i.booking_status == 3 %}
+                        <span class="status shipped">Shipped</span><br>
+                        <a href="{% url 'Artist:tracking' i.id 4 %}" class="action-btn">Deliver</a>
+
+                    {% elif i.booking_status == 4 %}
+                        <span class="status delivered">Delivered</span>
+
+                    {% else %}
+                        <a href="{% url 'Artist:tracking' i.id 2 %}" class="action-btn">Pack</a>
                     {% endif %}
                 </td>
             </tr>
             {% endfor %}
-        </table>
-    </form>  
-</body>
-</html>
+        </tbody>
+    </table>
+
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'Artist:ViewBooking' %}"
+    alert("{{msg}}");
+    window.location="{% url 'Artist:ViewBooking' %}";
 </script>
 {% endif %}
+
+{% endblock %}

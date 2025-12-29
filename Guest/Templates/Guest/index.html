@@ -8,12 +8,16 @@
     ================================================== -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lounge</title>
+    <title>ART HIVE</title>
 
     <script>
         document.documentElement.classList.remove('no-js');
         document.documentElement.classList.add('js');
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Artifika&display=swap" rel="stylesheet">
 
     <!-- CSS
     ================================================== -->
@@ -28,6 +32,15 @@
     <link rel="manifest" href="{% static 'Main/site.webmanifest' %}">
 
 </head>
+
+<style>
+    .artifika-regular {
+  font-family: "Artifika", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+</style>
 
 
 <body id="top">
@@ -44,7 +57,7 @@
 
     <!-- page wrap
     ================================================== -->
-    <div id="page" class="s-pagewrap ss-home">
+    <div id="page" class="">
 
 
         <!-- # site header 
@@ -56,7 +69,7 @@
                 <div class="s-header__block">
                     <div class="header-logo">
                         <a class="logo" href="index.html">
-                            <img src="{% static 'Main/images/logo.svg' %}" alt="Homepage">
+                           <h1 class="artifika-regular"  style="font-size: 25px;">ART HIVE</h1>
                         </a>
                     </div>
                     <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
@@ -64,10 +77,10 @@
             
                 <nav class="header-nav">    
                     <ul class="header-nav__links">
-                        <li class="current"><a class="smoothscroll" href="#intro">Intro</a></li>
-                        <li><a class="smoothscroll" href="#about">About</a></li>
-                        <li><a class="smoothscroll" href="#menu">Menu</a></li>
-                        <li><a class="smoothscroll" href="#gallery">Gallery</a></li>
+                        <li class="current"><a class="" href="{% url 'Guest:index' %}">Home</a></li>
+                        <li><a class="" href="{% url 'Guest:UserRegistration' %}">User Registration</a></li>
+                        <li ><a class="" href="{% url 'Guest:ArtistRegistration' %}">Artist Registration</a></li>
+                        <li><a class="" href="{% url 'Guest:Login' %}">Login</a></li>
                     </ul> <!-- end header-nav__links -->  
                     
                     </div> <!-- end header-contact -->
@@ -126,9 +139,9 @@
                     <a class="smoothscroll" href="#about">                            
                         <!-- <span class="intro-scroll__circle-text"></span> -->
                         <span class="intro-scroll__text u-screen-reader-text">Scroll Down</span>
-                        <div class="intro-scroll__icon">
+                        <!-- <div class="intro-scroll__icon">
                             <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m5.214 14.522s4.505 4.502 6.259 6.255c.146.147.338.22.53.22s.384-.073.53-.22c1.754-1.752 6.249-6.244 6.249-6.244.144-.144.216-.334.217-.523 0-.193-.074-.386-.221-.534-.293-.293-.766-.294-1.057-.004l-4.968 4.968v-14.692c0-.414-.336-.75-.75-.75s-.75.336-.75.75v14.692l-4.979-4.978c-.289-.289-.761-.287-1.054.006-.148.148-.222.341-.221.534 0 .189.071.377.215.52z" fill-rule="nonzero"/></svg>
-                        </div>
+                        </div> -->
                     </a>
                 </div> <!-- end intro-scroll -->
 
@@ -221,7 +234,7 @@
                         </div> <!-- end tab-content__item -->
 
 
-                        <div id="tab-pastries" class="menu-block__group tab-content__item">
+                        <!-- <div id="tab-pastries" class="menu-block__group tab-content__item">
 
                             <h6 class="menu-block__cat-name">
                                 Freshly Baked Pastries
@@ -281,7 +294,7 @@
                                     </div>
                                     <div class="menu-list__item-price">
                                         <span>$</span>3.25
-                                    </div>
+                                    </div> -->
                                 </li>
                             </ul> <!-- end menu-list -->
 
@@ -369,7 +382,7 @@
 
             <div class="row s-gallery__header">
                 <div class="column xl-12 section-header-wrap">
-                    <div class="section-header" data-num="">
+                    <div class="section-header">
                         <h2 class="text-display-title">Gallery</h2>
                     </div>               
                 </div> <!-- end section-header-wrap -->   
@@ -379,7 +392,7 @@
 
                 <div class="gallery-items__item grid-cols__column">
                     <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="{% static 'Main/images/Gallery1.JPG' %}" 
+                        <img src="{% static 'Main/images/Gallery18.WEBP' %}" 
                             srcset="{% static 'Main/images/gallery/gallery-01.jpg 1x, 
                                     images/gallery/gallery-01@2x.jpg 2x' %}" alt="">                                
                     </a>
@@ -387,7 +400,7 @@
     
                 <div class="gallery-items__item grid-cols__column">
                     <a href="images/gallery/large/l-gallery-02.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="{% static 'Main/images/Gallery2.JFIF' %}" 
+                        <img src="{% static 'Main/images/Gallery19.WEBP' %}" 
                             srcset="{% static 'Main/images/gallery/gallery-02.jpg 1x, 
                                     images/gallery/gallery-02@2x.jpg 2x' %}" alt="">
                     </a>
@@ -395,7 +408,7 @@
     
                 <div class="gallery-items__item grid-cols__column">
                     <a href="images/gallery/large/l-gallery-03.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="{% static 'Main/images/Gallery3.JPG' %}" 
+                        <img src="{% static 'Main/images/Gallery22.JFIF' %}" 
                             srcset="{% static 'Main/images/gallery/gallery-03.jpg 1x, 
                                     images/gallery/gallery-03@2x.jpg 2x' %}" alt="">
                     </a>
@@ -411,7 +424,7 @@
     
                 <div class="gallery-items__item grid-cols__column">
                     <a href="images/gallery/large/l-gallery-05.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="{% static 'Main/images/Gallery5.JFIF' %}" 
+                        <img src="{% static 'Main/images/Gallery17.JPG' %}" 
                             srcset="{% static 'Main/images/gallery/gallery-05.jpg 1x, 
                                     images/gallery/gallery-05@2x.jpg 2x' %}" alt="">
                     </a>
@@ -419,7 +432,7 @@
     
                 <div class="gallery-items__item grid-cols__column">
                     <a href="images/gallery/large/l-gallery-06.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="{% static 'Main/images/Gallery6.JPG' %}" 
+                        <img src="{% static 'Main/images/Gallery9.JPEG' %}" 
                             srcset="{% static 'Main/images/gallery/gallery-06.jpg 1x, 
                                     images/gallery/gallery-06@2x.jpg 2x' %}" alt="">
                     </a>
@@ -427,7 +440,7 @@
     
                 <div class="gallery-items__item grid-cols__column">
                     <a href="images/gallery/large/l-gallery-07.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="{% static 'Main/images/Gallery7.JPG' %}" 
+                        <img src="{% static 'Main/images/Gallery12.JPEG' %}" 
                             srcset="{% static 'Main/images/gallery/gallery-07.jpg 1x, 
                                     images/gallery/gallery-07@2x.jpg 2x' %}" alt="">
                     </a>
@@ -435,7 +448,7 @@
     
                 <div class="gallery-items__item grid-cols__column">
                     <a href="images/gallery/large/l-gallery-08.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="{% static 'Main/images/Gallery8.JFIF' %}" 
+                        <img src="{% static 'Main/images/Gallery14.JPG' %}" 
                             srcset="{% static 'Main/images/gallery/gallery-08.jpg 1x, 
                                     images/gallery/gallery-08@2x.jpg 2x' %}" alt="">
                     </a>
@@ -557,7 +570,7 @@
 
                     <div class="s-footer__logo" style="margin-top: 50px;margin-left: 50px;">
                         <a class="logo" href="index.html">
-                            <img src="{% static 'Main/images/logo.svg' %}" alt="Homepage">
+                          <h1 class="artifika-regular"  style="font-size: 25px;">ART HIVE</h1>
                         </a>
                     </div> 
 

@@ -1,42 +1,200 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Booking</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Artwork Details</td>
-                <td>Photo</td>
-                <td>Price</td>
-                <td>Date</td>
-                <td>Status</td>
-            </tr>
-            {% for i in bookData %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.artwork_id.artwork_details}}</td>
-                <td><img src="{{i.artwork_id.artwork_photo.url}}" width="150" alt=""></td>
-                <td>{{i.booking_amount}}</td>
-                <td>{{i.booking_date}}</td>
-                <td>{% if i.booking_status == 1 %} booking Completed
-                    {% elif i.booking_status == 2 %} Item Packed
-                    {% elif i.booking_status == 3 %} Item Send
-                    {% elif i.booking_status == 4 %} Item Delivered
-                    <a href="{% url 'User:rating' i.artwork_id.artist.id %}">Rating</a>
+{% extends 'User/Header.html' %}
+{% block content %}
 
-                    {% elif i.booking_status == 0 %} <a href="{% url 'User:Payment' i.id %}"> Payment</a>
+<style>
+/* ===== FULL WIDTH FIX ===== */
+.booking-fullwidth {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* ===== PAGE BACKGROUND ===== */
+.booking-art-page {
+    min-height: 100vh;
+    padding: 90px 30px;
+
+    background:
+        radial-gradient(circle at top left, rgba(255,0,150,0.3), transparent 45%),
+        radial-gradient(circle at bottom right, rgba(0,255,255,0.3), transparent 45%),
+        linear-gradient(180deg, #050505, #0d0d0d);
+}
+
+/* ===== TITLE ===== */
+.booking-art-title {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 60px;
+}
+
+/* ===== GRID ===== */
+.booking-art-grid {
+    max-width: 1300px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 35px;
+}
+
+/* ===== CARD ===== */
+.booking-art-card {
+    background: linear-gradient(145deg, #121212, #1a1a1a);
+    border-radius: 22px;
+    overflow: hidden;
+    position: relative;
+
+    box-shadow:
+        0 25px 55px rgba(0,0,0,0.7),
+        0 0 35px rgba(255,0,150,0.25),
+        0 0 35px rgba(0,255,255,0.25);
+
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.booking-art-card:hover {
+    transform: translateY(-10px);
+    box-shadow:
+        0 35px 70px rgba(0,0,0,0.85),
+        0 0 50px rgba(255,0,150,0.45),
+        0 0 50px rgba(0,255,255,0.45);
+}
+
+/* ===== IMAGE ===== */
+.booking-art-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+/* ===== CONTENT ===== */
+.booking-art-content {
+    padding: 22px;
+    color: #eaeaea;
+}
+
+.booking-art-content p {
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ===== PRICE ===== */
+.booking-art-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffd700;
+}
+
+/* ===== DATE ===== */
+.booking-art-date {
+    font-size: 13px;
+    color: #aaa;
+}
+
+/* ===== STATUS BADGES ===== */
+.booking-art-status {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 999px;
+}
+
+.status-complete { background: linear-gradient(135deg, #00ffcc, #00cc99); color: #000; }
+.status-packed { background: linear-gradient(135deg, #ffcc00, #ff9900); color: #000; }
+.status-send { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+.status-delivered { background: linear-gradient(135deg, #7cff00, #3bb300); color: #000; }
+.status-payment { background: linear-gradient(135deg, #ff0096, #ff6a00); }
+
+/* ===== ACTION BUTTON ===== */
+.booking-art-action {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #000;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.booking-art-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255,140,0,0.5);
+}
+
+/* ===== COUNT BADGE ===== */
+.booking-art-count {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #ff0096, #00ffff);
+    color: #000;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 999px;
+}
+</style>
+
+<div class="booking-fullwidth">
+    <div class="booking-art-page">
+
+        <div class="booking-art-title">
+            My Art Bookings
+        </div>
+
+        <div class="booking-art-grid">
+            {% for i in bookData %}
+            <div class="booking-art-card">
+
+                <div class="booking-art-count">
+                    {{ forloop.counter }}
+                </div>
+
+                <img src="{{ i.artwork_id.artwork_photo.url }}" class="booking-art-image" alt="Artwork">
+
+                <div class="booking-art-content">
+                    <p>{{ i.artwork_id.artwork_details }}</p>
+
+                    <p class="booking-art-price">
+                        ₹ {{ i.booking_amount }}
+                    </p>
+
+                    <p class="booking-art-date">
+                        {{ i.booking_date }}
+                    </p>
+
+                    {% if i.booking_status == 1 %}
+                        <span class="booking-art-status status-complete">Booking Completed</span>
+
+                    {% elif i.booking_status == 2 %}
+                        <span class="booking-art-status status-packed">Item Packed</span>
+
+                    {% elif i.booking_status == 3 %}
+                        <span class="booking-art-status status-send">Item Sent</span>
+
+                    {% elif i.booking_status == 4 %}
+                        <span class="booking-art-status status-delivered">Item Delivered</span><br>
+                        <a href="{% url 'User:rating' i.artwork_id.artist.id %}" class="booking-art-action">Rate Artist</a>
+
+                    {% elif i.booking_status == 0 %}
+                        <span class="booking-art-status status-payment">Payment Pending</span><br>
+                        <a href="{% url 'User:Payment' i.id %}" class="booking-art-action">Pay Now</a>
                     {% endif %}
-                </td>
-            </tr>
+                </div>
+
+            </div>
             {% endfor %}
-        </table>
-    </form>
-    
-</body>
-</html>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

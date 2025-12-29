@@ -1,52 +1,207 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Artist</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <style>
-       .text-warning {
-            color: orange;
-        }   
+{% extends 'User/Header.html' %}
+{% block content %}
+
+<style>
+/* ===== BREAK HEADER CONTAINER ===== */
+.full-width-artist {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* ===== PAGE BACKGROUND ===== */
+.artist-page-wrapper {
+    min-height: 100vh;
+    padding: 100px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(circle at 0% 30%, rgba(255,0,150,0.35), transparent 45%),
+        radial-gradient(circle at 100% 70%, rgba(0,255,255,0.35), transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(255,215,0,0.25), transparent 55%),
+        linear-gradient(180deg, #0a0a0a, #0a0a0a);
+}
+
+/* ===== ARTIST CARD ===== */
+.artist-art-card {
+    width: 100%;
+    max-width: 520px;
+    padding: 40px 35px;
+    border-radius: 28px;
+
+    background: linear-gradient(145deg, #0b0b0b, #151515);
+    box-shadow:
+        0 30px 60px rgba(0,0,0,0.75),
+        0 0 45px rgba(255,0,150,0.18),
+        0 0 45px rgba(0,255,255,0.18);
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* paint glow */
+.artist-art-card::before {
+    content: "";
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, #ff0096, transparent 70%);
+    opacity: 0.35;
+    border-radius: 50%;
+}
+
+/* IMAGE */
+.artist-image-box {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.artist-image {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 5px solid transparent;
+    background:
+        linear-gradient(#000, #000) padding-box,
+        linear-gradient(135deg, #ff0096, #00ffff, #ffd700) border-box;
+}
+
+/* NAME */
+.artist-name {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+/* INFO */
+.artist-info {
+    text-align: center;
+    font-size: 14px;
+    color: #cccccc;
+    margin-bottom: 16px;
+}
+
+/* RATING */
+.artist-rating {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.artist-rating i {
+    font-size: 18px;
+    margin: 0 2px;
+}
+
+.text-warning {
+    color: #ffd700;
+}
+
+.star-light {
+    color: rgba(255,255,255,0.2);
+}
+
+/* DETAILS TABLE */
+.artist-details {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 35px;
+}
+
+.artist-details th {
+    text-align: left;
+    padding: 12px 8px;
+    font-weight: 600;
+    color: #ffffff;
+    width: 35%;
+}
+
+.artist-details td {
+    padding: 12px 8px;
+    color: #cfcfcf;
+}
+
+.artist-details tr {
+    border-bottom: 1px dashed rgba(255,255,255,0.15);
+}
+
+/* BUTTON */
+.artist-action {
+    text-align: center;
+}
+
+.artist-btn {
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #000;
+
+    background: linear-gradient(135deg, #ff0096, #00ffff);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artist-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(255,0,150,0.45);
+}
 </style>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td colspan="2"><img src="{{artistData.artist_photo.url}}" width="150" alt=""></td>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td>{{artistData.artist_name}}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>{{artistData.artist_email}}</td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td>{{artistData.artist_contact}}</td>
-            </tr>
-            <tr>
-                <td>Rating</td>
-                <td>
-                     <div>
-                {% for k in ar %} {% if k <= parry %} <i class="fa-solid fa-star text-warning"></i>
-                    {% else %}
-                    <i class="fa-solid fa-star star-light"></i>
-                    {% endif %} {% endfor %}
+
+<div class="full-width-artist">
+    <div class="artist-page-wrapper">
+
+        <div class="artist-art-card">
+
+            <div class="artist-image-box">
+                <img src="{{ artistData.artist_photo.url }}" class="artist-image">
             </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><a href="{% url 'User:CustomRequest' artistData.id %}">Custom Request</a> </td>
-            </tr>
-        </table>
-    </form>
-    
-</body>
-</html>
+
+            <div class="artist-name">
+                {{ artistData.artist_name }}
+            </div>
+
+            <div class="artist-info">
+                {{ artistData.artist_email }} · {{ artistData.artist_contact }}
+            </div>
+
+            <div class="artist-rating">
+                {% for k in ar %}
+                    {% if k <= parry %}
+                        <i class="fa-solid fa-star text-warning"></i>
+                    {% else %}
+                        <i class="fa-solid fa-star star-light"></i>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <table class="artist-details">
+                <tr>
+                    <th>Email</th>
+                    <td>{{ artistData.artist_email }}</td>
+                </tr>
+                <tr>
+                    <th>Contact</th>
+                    <td>{{ artistData.artist_contact }}</td>
+                </tr>
+            </table>
+
+            <div class="artist-action">
+                <a href="{% url 'User:CustomRequest' artistData.id %}" class="artist-btn">
+                    Custom Artwork Request
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,77 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Artist/Header.html' %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Customer Request</title>
-</head>
+<style>
+/* ===== PAGE WRAPPER ===== */
+.artist-req-wrapper {
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px;
+    background: #0b0b0f;
+    overflow-x: auto;
+}
 
-<body>
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table border="2">
+/* ===== CARD ===== */
+.artist-req-card {
+    background: linear-gradient(145deg, #111827, #020617);
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+/* ===== TITLE ===== */
+.artist-req-title {
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+    color: #e5e7eb;
+}
+
+/* ===== TABLE ===== */
+.artist-req-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #e5e7eb;
+}
+
+.artist-req-table th {
+    background: #020617;
+    padding: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid #1f2933;
+}
+
+.artist-req-table td {
+    padding: 14px;
+    border-bottom: 1px solid #1f2933;
+    vertical-align: top;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+/* ===== DETAILS COLUMN ===== */
+.artist-req-table td.details-col {
+    max-width: 300px;
+    text-align: left;
+}
+
+/* ===== IMAGE ===== */
+.artist-req-img {
+    width: 120px;
+    border-radius: 10px;
+    display: block;
+    margin: auto;
+}
+
+/* ===== ACTION COLUMN ===== */
+.artist-req-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.artist-req-actions a {
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    background: linear-gradient(135deg, #6366f1, #9333ea);
+    color: white;
+    transition: 0.3s;
+}
+
+.artist-req-actions a:hover {
+    transform: scale(1.05);
+}
+
+/* ===== STATUS TEXT ===== */
+.artist-status {
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .artist-req-wrapper {
+        padding: 20px;
+    }
+}
+</style>
+
+<div class="artist-req-wrapper">
+    <div class="artist-req-card">
+
+        <h2 class="artist-req-title">Customer Requests</h2>
+
+        <table class="artist-req-table">
             <tr>
-                <td>Sl No</td>
-                <td>User Name</td>
-                <td>Contact</td>
-                <td>File</td>
-                <td>Amount</td>
-                <td>Details</td>
-                <td>Action</td>
+                <th>Sl No</th>
+                <th>User Name</th>
+                <th>Contact</th>
+                <th>File</th>
+                <th>Amount</th>
+                <th>Details</th>
+                <th>Action</th>
             </tr>
+
             {% for i in customData %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{i.user_id.user_name}}</td>
                 <td>{{i.user_id.user_contact}}</td>
-                <td><img src="{{i.customization_file.url}}" width="150" alt=""></td>
-                <td>{{i.customization_amount}}</td>
-                <td>{{i.customization_details}}</td>
                 <td>
-                    {% if i.customization_status == 0 %}
-                             <a href="{% url 'Artist:Amount' i.id %}">Accept</a> | <a
-                        href="{% url 'Artist:Reject' i.id %}">Reject</a> <br>
-                    {% elif i.customization_status == 1 %}
-                    Waiting For User Confirmation
-                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
-                    {% elif i.customization_status == 2 %}
-                    Rejected
-                    {% elif i.customization_status == 3 %}
-                    User Confirmed
-                     <a href="{% url 'Artist:WorkUpdate' i.id  5 %}">Start</a>
-                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+                    <img src="{{i.customization_file.url}}" class="artist-req-img">
+                </td>
+                <td>{{i.customization_amount}}</td>
+                <td class="details-col">
+                    {{i.customization_details}}
+                </td>
+                <td>
+                    <div class="artist-req-actions">
+                        {% if i.customization_status == 0 %}
+                            <a href="{% url 'Artist:Amount' i.id %}">Accept</a>
+                            <a href="{% url 'Artist:Reject' i.id %}">Reject</a>
 
-                    {% elif i.customization_status == 4 %}
-                    User Rejected
-                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
-                    
-           
+                        {% elif i.customization_status == 1 %}
+                            <span class="artist-status">Waiting for User</span>
+                            <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
 
-                    {% elif i.customization_status == 5 %} Work Start 
-                    <a href="{% url 'Artist:WorkUpdate' i.id  6 %}">End</a> <br>
-                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+                        {% elif i.customization_status == 2 %}
+                            <span class="artist-status">Rejected</span>
 
-                    {% elif i.customization_status == 6 %} Work End<a
-                        href="{% url 'Artist:WorkUpdate' i.id  7 %}">Delivered</a> <br>
-                     <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+                        {% elif i.customization_status == 3 %}
+                            <span class="artist-status">User Confirmed</span>
+                            <a href="{% url 'Artist:WorkUpdate' i.id 5 %}">Start</a>
+                            <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
 
-                    {% elif i.customization_status == 7 %} Work Delivered
-                    {% else %}
-                    <a href="{% url 'Artist:WorkUpdate' i.id  5 %}">Start</a>
-                    {% endif %}
+                        {% elif i.customization_status == 4 %}
+                            <span class="artist-status">User Rejected</span>
+                            <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+
+                        {% elif i.customization_status == 5 %}
+                            <span class="artist-status">Work Started</span>
+                            <a href="{% url 'Artist:WorkUpdate' i.id 6 %}">End</a>
+                            <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+
+                        {% elif i.customization_status == 6 %}
+                            <span class="artist-status">Work Ended</span>
+                            <a href="{% url 'Artist:WorkUpdate' i.id 7 %}">Delivered</a>
+                            <a href="{% url 'Artist:chatpage' i.user_id.id %}">Chat</a>
+
+                        {% elif i.customization_status == 7 %}
+                            <span class="artist-status">Delivered</span>
+                        {% endif %}
+                    </div>
                 </td>
             </tr>
             {% endfor %}
         </table>
-    </form>
 
-</body>
+    </div>
+</div>
 
-</html>
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location = "{% url 'Artist:ViewCustomerRequest' %}"
+    alert("{{msg}}");
+    window.location = "{% url 'Artist:ViewCustomerRequest' %}";
 </script>
 {% endif %}
+
+{% endblock %}

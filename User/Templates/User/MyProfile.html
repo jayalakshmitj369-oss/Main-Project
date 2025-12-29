@@ -1,49 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td colspan="2"><img src="{{user.user_photo.url}}" width="150" alt=""></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Name</td>
-                <td>{{user.user_name}}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>{{user.user_email}}</td>
-            </tr>
-            <tr>
-                <td>Contact</td>
-                <td>{{user.user_contact}}</td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td>{{user.user_address}}</td>
-            </tr>
-            <tr>
-                <td>District</td>
-                <td>{{user.place.district.district_name}}</td>
-            </tr>
-            <tr>
-                <td>Place</td>
-                <td>{{user.place.place_name}}</td>
-            </tr>
-            <tr>
-               
-               <td colspan="2" align="center"><a href="{% url 'User:EditProfile' %}">Edit Profile</a> | <a href="{% url 'User:ChangePassword' %}">Change Password</a> </td>
-            </tr>
-        </table>
+{% extends 'User/Header.html' %}
+{% block content %}
 
-    </form>
-    
-</body>
-</html>
+<style>
+/* ===== FORCE FULL WIDTH (BREAK CONTAINER) ===== */
+.full-width-profile {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* ===== Artistic Profile Theme ===== */
+.profile-art-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 100px 20px;
+
+    background:
+        radial-gradient(circle at 0% 40%, rgba(255, 0, 150, 0.25), transparent 45%),
+        radial-gradient(circle at 100% 60%, rgba(0, 255, 255, 0.25), transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(255, 215, 0, 0.2), transparent 55%),
+        linear-gradient(180deg, #0a0a0a, #0a0a0a);
+}
+
+/* ===== CARD ===== */
+.profile-art-card {
+    width: 100%;
+    max-width: 460px;
+    background: linear-gradient(145deg, #0b0b0b, #141414);
+    border-radius: 22px;
+    padding: 35px;
+    position: relative;
+
+    box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(255, 0, 150, 0.15),
+        0 0 40px rgba(0, 255, 255, 0.15);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+/* Paint splash */
+.profile-art-card::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, #ff0096, transparent 70%);
+    opacity: 0.35;
+    border-radius: 50%;
+}
+
+/* Image */
+.profile-art-image-box {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-art-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 5px solid transparent;
+    background:
+        linear-gradient(#000, #000) padding-box,
+        linear-gradient(135deg, #ff0096, #00ffff, #ffd700) border-box;
+}
+
+/* Table */
+.profile-art-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.profile-art-table th {
+    text-align: left;
+    padding: 12px 8px;
+    font-weight: 600;
+    color: #ffffff;
+    width: 42%;
+}
+
+.profile-art-table td {
+    padding: 12px 8px;
+    color: #cfcfcf;
+}
+
+.profile-art-table tr {
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+/* Buttons */
+.profile-art-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+}
+
+.profile-art-btn {
+    padding: 12px 22px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    color: #000;
+
+    background: linear-gradient(135deg, #ff0096, #00ffff);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-art-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 0, 150, 0.4);
+}
+
+.profile-art-btn.secondary {
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+}
+</style>
+
+<!-- 🔥 FULL WIDTH WRAPPER -->
+<div class="full-width-profile">
+    <div class="profile-art-wrapper">
+
+        <div class="profile-art-card">
+
+            <div class="profile-art-image-box">
+                <img src="{{ user.user_photo.url }}" class="profile-art-image">
+            </div>
+
+            <table class="profile-art-table">
+                <tr><th>Artist Name</th><td>{{ user.user_name }}</td></tr>
+                <tr><th>Email</th><td>{{ user.user_email }}</td></tr>
+                <tr><th>Contact</th><td>{{ user.user_contact }}</td></tr>
+                <tr><th>Address</th><td>{{ user.user_address }}</td></tr>
+                <tr><th>District</th><td>{{ user.place.district.district_name }}</td></tr>
+                <tr><th>Place</th><td>{{ user.place.place_name }}</td></tr>
+            </table>
+
+            <div class="profile-art-actions">
+                <a href="{% url 'User:EditProfile' %}" class="profile-art-btn">
+                    Edit Profile
+                </a>
+                <a href="{% url 'User:ChangePassword' %}" class="profile-art-btn secondary">
+                    Change Password
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

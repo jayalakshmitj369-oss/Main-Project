@@ -1,54 +1,208 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complaint</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaints</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<style>
+/* Full-page dark wrapper */
+.complaint-page-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 20px;
+    position: relative;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+}
+
+/* Background floating neon shapes */
+.complaint-bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.2;
+    animation: float 15s infinite;
+    pointer-events: none;
+}
+
+.complaint-bg-shape.shape1 { width: 250px; height: 250px; background: #0ff; top: -60px; left: -60px; animation-delay: 0s; }
+.complaint-bg-shape.shape2 { width: 200px; height: 200px; background: #f0f; bottom: -50px; right: -50px; animation-delay: 5s; }
+.complaint-bg-shape.shape3 { width: 150px; height: 150px; background: #ff0; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 10s; }
+
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-40px) translateX(40px); }
+    100% { transform: translateY(0) translateX(0); }
+}
+
+/* Complaint form container */
+.complaint-form-container {
+    z-index: 2;
+    width: 100%;
+    max-width: 700px;
+    background-color: #111;
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 50px;
+}
+
+/* Form header */
+.complaint-form-container h2 {
+    text-align: center;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    margin-bottom: 30px;
+}
+
+/* Inputs & textarea */
+.complaint-input, .complaint-textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #000;
+    color: #0ff;
+    border: 1px solid #0ff;
+    border-radius: 15px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.complaint-input:focus, .complaint-textarea:focus {
+    outline: none;
+    border-color: #f0f;
+    box-shadow: 0 0 15px #0ff;
+}
+
+/* Submit button */
+.complaint-submit-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(90deg, #0ff, #f0f);
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.complaint-submit-btn:hover {
+    background: linear-gradient(90deg, #f0f, #0ff);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+}
+
+.complaint-table-container {
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+    overflow-x: auto;
+}
+
+.complaint-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.complaint-table th, .complaint-table td {
+    padding: 15px;
+    border: 1px solid #0ff;
+    text-align: center;
+    color: #0ff;
+}
+
+.complaint-table th {
+    background-color: #111;
+    color: #f0f;
+    text-shadow: 0 0 5px #f0f;
+}
+
+.complaint-table tr:nth-child(even) {
+    background-color: #111;
+}
+
+.complaint-table tr:nth-child(odd) {
+    background-color: #000;
+}
+
+.complaint-table a {
+    color: #f0f;
+    text-decoration: none;
+}
+
+.complaint-table a:hover {
+    text-decoration: underline;
+}
+</style>
 </head>
+
 <body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Title</td>
-                <td><input type="text" name="txt_title" id="txt_title"></td>
-            </tr>
-            <tr>
-                <td>Content</td>
-                <td><textarea name="txt_content" id="txt_content"></textarea></td>
-            </tr>
-            <tr>
-                <td>Submit</td>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
+
+<div class="complaint-page-wrapper">
+    <!-- Background shapes -->
+    <div class="complaint-bg-shape shape1"></div>
+    <div class="complaint-bg-shape shape2"></div>
+    <div class="complaint-bg-shape shape3"></div>
+
+    <!-- Complaint Form -->
+    <div class="complaint-form-container">
+        <h2>Submit Your Complaint</h2>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" class="complaint-input" name="txt_title" placeholder="Title" required>
+            <textarea class="complaint-textarea" name="txt_content" placeholder="Content" rows="5" required></textarea>
+            <input type="submit" class="complaint-submit-btn" value="Submit">
+        </form>
+    </div>
+
+    <!-- Complaints Table -->
+    <div class="complaint-table-container">
+        <table class="complaint-table">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Date</th>
+                    <th>Reply</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in complaintData %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.complaint_title}}</td>
+                    <td>{{i.complaint_content}}</td>
+                    <td>{{i.complaint_date}}</td>
+                    <td>{{i.complaint_reply}}</td>
+                    <td><a href="{% url 'User:DeleteComplaint' i.id %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-    </form>
-    <table border="1">
-        <tr>
-            <td>Sl No</td>
-            <td>Title</td>
-            <td>Content</td>
-            <td>Date</td>
-            <td>Reply</td>
-            <td>Action</td>
-        </tr>
-        {% for i in complaintData %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.complaint_title}}</td>
-            <td>{{i.complaint_content}}</td>
-            <td>{{i.complaint_date}}</td>
-            <td>{{i.complaint_reply}}</td>
-            <td><a href="{% url 'User:DeleteComplaint' i.id %}">Delete</a> </td>
-        </tr>
-        {% endfor %}
-    </table>
-    
-</body>
+    </div>
+</div>
+
 {% if msg %}
 <script>
-     alert("{{msg}}")
-    window.location="{% url 'User:Complaint' %}"
+    alert("{{msg}}");
+    window.location = "{% url 'User:Complaint' %}";
 </script>
 {% endif %}
+
+</body>
 </html>
+
+{% endblock %}
