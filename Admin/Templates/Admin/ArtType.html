@@ -1,44 +1,205 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArtType</title>
+    <title>Art Type</title>
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Art Type</td>
-                <td><input type="text" name="txt_arttypename" id="txt_arttypename"></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Art Type</td>
-                <td>Action</td>
-            </tr>
-            {% for i in arttypeData %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ i.arttype_name }}</td>
-                <td><a href="{% url 'Admin:DeleteArtType' i.id %}">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-    
-    
-</body>
+<style>
+/* ===== Art Type Page Wrapper ===== */
+.arttype-page-wrapper {
+    padding: 30px;
+    background: #f6f7fb;
+    min-height: 80vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ===== Page Title ===== */
+.arttype-page-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2b2b2b;
+    margin-bottom: 25px;
+}
+
+/* ===== Card ===== */
+.arttype-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+/* ===== Form ===== */
+.arttype-form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.arttype-form-row label {
+    font-weight: 500;
+    color: #444;
+}
+
+.arttype-input {
+    padding: 11px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.arttype-input:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139,92,246,0.25);
+    outline: none;
+}
+
+/* ===== Submit Button ===== */
+.arttype-btn-area {
+    text-align: center;
+}
+
+.arttype-submit-btn {
+    padding: 10px 32px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.arttype-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(139,92,246,0.4);
+}
+
+/* ===== Table ===== */
+.arttype-table-wrapper {
+    overflow-x: auto;
+}
+
+.arttype-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.arttype-table thead {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+}
+
+.arttype-table th,
+.arttype-table td {
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.arttype-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s;
+}
+
+.arttype-table tbody tr:hover {
+    background: #f3e8ff;
+}
+
+/* ===== Delete Button ===== */
+.arttype-delete-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: #ef4444;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.arttype-delete-btn:hover {
+    opacity: 0.85;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .arttype-form-row {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="arttype-page-wrapper">
+
+    <!-- Page Title -->
+    <div class="arttype-page-title">🎨 Art Type Management</div>
+
+    <!-- Add Art Type -->
+    <div class="arttype-card">
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <div class="arttype-form-row">
+                <label for="txt_arttypename">Art Type</label>
+                <input type="text"
+                       name="txt_arttypename"
+                       id="txt_arttypename"
+                       class="arttype-input"
+                       placeholder="Enter art type name"
+                       required>
+            </div>
+
+            <div class="arttype-btn-area">
+                <button type="submit" class="arttype-submit-btn">
+                    Add Art Type
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Art Type List -->
+    <div class="arttype-card">
+        <div class="arttype-table-wrapper">
+            <table class="arttype-table">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>Art Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in arttypeData %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.arttype_name }}</td>
+                        <td>
+                            <a href="{% url 'Admin:DeleteArtType' i.id %}" 
+                               class="arttype-delete-btn">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No art types added yet</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'Admin:ArtType' %}"
+    alert("{{msg}}");
+    window.location="{% url 'Admin:ArtType' %}";
 </script>
 {% endif %}
-</html>
+
+{% endblock %}

@@ -1,38 +1,164 @@
-{% extends 'User/Header.html' %}
+{% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <tr>
-                <td>Email</td>
-                <td><input type="email" required name="txt_email"></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="text" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required name="txt_password"></td>
-            </tr>
-            <tr>
-                <td>Login</td>
-                <td colspan="1" align="center"><input type="submit" value="Login"></td>
-            </tr>
-        </table>
+<style>
+/* ===== FULL PAGE ARTISTIC LOGIN BACKGROUND ===== */
+.artist-lottie-login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f472b6, #3b82f6);
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+}
 
-    </form>
-    
-</body>
-</html>
+/* ===== LOGIN WRAPPER ===== */
+.artist-login-wrapper {
+    display: flex;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.7);
+    max-width: 850px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ===== HOME BUTTON ===== */
+.artist-home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #0ff, #6366f1);
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(0,255,255,0.6);
+    transition: 0.3s;
+}
+
+.artist-home-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0,255,255,0.9);
+}
+
+/* ===== LOTTIE CONTAINER ===== */
+.artist-lottie-left {
+    flex: 1;
+    min-width: 300px;
+    height: 100%;
+}
+
+/* ===== LOGIN CARD ===== */
+.artist-lottie-login-card {
+    flex: 1;
+    padding: 50px 40px;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ===== HEADING ===== */
+.artist-lottie-login-title {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #f472b6;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    animation: glowLogin 3s ease-in-out infinite alternate;
+}
+
+/* ===== INPUT FIELDS ===== */
+.artist-lottie-login-input {
+    width: 100%;
+    padding: 14px 16px;
+    margin: 12px 0;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* ===== LOGIN BUTTON ===== */
+.artist-lottie-login-button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 24px;
+    background: #f472b6; /* rose color */
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.artist-lottie-login-button:hover {
+    background: #e11d48; /* darker rose */
+}
+
+/* ===== HEADING GLOW ===== */
+@keyframes glowLogin {
+    0% { text-shadow: 0 0 5px #f472b6, 0 0 10px #3b82f6; }
+    50% { text-shadow: 0 0 25px #f472b6, 0 0 35px #3b82f6; }
+    100% { text-shadow: 0 0 5px #f472b6, 0 0 10px #3b82f6; }
+}
+</style>
+
+<div class="artist-lottie-login-page">
+
+    <!-- Home Button -->
+    <a href="{% url 'Guest:index' %}" class="artist-home-btn">Home</a>
+
+    <div class="artist-login-wrapper">
+        <!-- Lottie on Left -->
+        <div class="artist-lottie-left" id="artistLottie"></div>
+
+        <!-- Login Card -->
+        <div class="artist-lottie-login-card">
+            <h1 class="artist-lottie-login-title">Login</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="email" name="txt_email" placeholder="Email" required class="artist-lottie-login-input">
+                <input type="password" name="txt_password" placeholder="Password" required 
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                       title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters" 
+                       class="artist-lottie-login-input">
+                <input type="submit" value="Login" class="artist-lottie-login-button">
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ===== LOTTIE SCRIPT ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.1/lottie.min.js"></script>
+<script>
+    lottie.loadAnimation({
+        container: document.getElementById('artistLottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: "https://assets9.lottiefiles.com/packages/lf20_jcikwtux.json"
+    });
+</script>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
+    alert("{{msg}}");
     window.location="{% url 'Guest:Login' %}"
 </script>
 {% endif %}
+
 {% endblock %}

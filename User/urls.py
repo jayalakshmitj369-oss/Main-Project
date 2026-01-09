@@ -50,5 +50,7 @@ urlpatterns=[
     path('ajaxstar/',views.ajaxstar,name="ajaxstar"),
     path('starrating/',views.starrating,name="starrating"),
 
+    path('Logout/',views.Logout, name="Logout"),
+
 
 ]

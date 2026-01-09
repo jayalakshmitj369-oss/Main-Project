@@ -1,54 +1,226 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Art Subtype</title>
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table  border="2">
-            <tr>
-                <td>SubType</td>
-                <td><input type="text" name="txt_subtype" id="txt_subtype"></td>
-            </tr>
-            <tr>
-                <td>Art Type</td>
-                <td><select name="sel_arttype" id="sel_arttype">
-                     <option value="">------Select------</option>
+<style>
+/* ===== Art Subtype Page Wrapper ===== */
+.artsubtype-page-wrapper {
+    padding: 30px;
+    background: #f6f7fb;
+    min-height: 80vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ===== Page Title ===== */
+.artsubtype-page-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #2b2b2b;
+    margin-bottom: 25px;
+}
+
+/* ===== Card ===== */
+.artsubtype-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+/* ===== Form Layout ===== */
+.artsubtype-form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.artsubtype-form-row label {
+    font-weight: 500;
+    color: #444;
+}
+
+/* ===== Inputs ===== */
+.artsubtype-input,
+.artsubtype-select {
+    padding: 11px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.artsubtype-input:focus,
+.artsubtype-select:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139,92,246,0.25);
+    outline: none;
+}
+
+/* ===== Submit Button ===== */
+.artsubtype-btn-area {
+    text-align: center;
+}
+
+.artsubtype-submit-btn {
+    padding: 10px 32px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.artsubtype-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(139,92,246,0.4);
+}
+
+/* ===== Table ===== */
+.artsubtype-table-wrapper {
+    overflow-x: auto;
+}
+
+.artsubtype-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.artsubtype-table thead {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+}
+
+.artsubtype-table th,
+.artsubtype-table td {
+    padding: 12px 16px;
+    text-align: center;
+}
+
+.artsubtype-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s;
+}
+
+.artsubtype-table tbody tr:hover {
+    background: #f3e8ff;
+}
+
+/* ===== Delete Button ===== */
+.artsubtype-delete-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: #ef4444;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.artsubtype-delete-btn:hover {
+    opacity: 0.85;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .artsubtype-form-row {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="artsubtype-page-wrapper">
+
+    <!-- Page Title -->
+    <div class="artsubtype-page-title">🎭 Art Subtype Management</div>
+
+    <!-- Add Art Subtype -->
+    <div class="artsubtype-card">
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <div class="artsubtype-form-row">
+                <label for="txt_subtype">Sub Type</label>
+                <input type="text"
+                       name="txt_subtype"
+                       id="txt_subtype"
+                       class="artsubtype-input"
+                       placeholder="Enter art subtype"
+                       required>
+            </div>
+
+            <div class="artsubtype-form-row">
+                <label for="sel_arttype">Art Type</label>
+                <select name="sel_arttype"
+                        id="sel_arttype"
+                        class="artsubtype-select"
+                        required>
+                    <option value="">-- Select Art Type --</option>
                     {% for i in arttypeData %}
-                        <option {% if artsubtypeOne.arttype_id == i.id %} selected {% endif %} value="{{i.id}}">{{i.arttype_name}}</option>
+                        <option {% if artsubtypeOne.arttype_id == i.id %} selected {% endif %}
+                                value="{{i.id}}">
+                            {{ i.arttype_name }}
+                        </option>
                     {% endfor %}
-                </select></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Art Type</td>
-                <td>SubType</td>
-                <td>Action</td>
-            </tr>
-            {% for i in artsubtypeData %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.arttype.arttype_name}}</td>
-                <td>{{i.artsubtype_name}}</td>
-                <td><a href="{% url 'Admin:DeleteArtSubType' i.id %}">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-    
-</body>
+                </select>
+            </div>
+
+            <div class="artsubtype-btn-area">
+                <button type="submit" class="artsubtype-submit-btn">
+                    Add Subtype
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Art Subtype List -->
+    <div class="artsubtype-card">
+        <div class="artsubtype-table-wrapper">
+            <table class="artsubtype-table">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>Art Type</th>
+                        <th>Sub Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in artsubtypeData %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.arttype.arttype_name }}</td>
+                        <td>{{ i.artsubtype_name }}</td>
+                        <td>
+                            <a href="{% url 'Admin:DeleteArtSubType' i.id %}"
+                               class="artsubtype-delete-btn">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No art subtypes available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'Admin:ArtSubType' %}"
+    alert("{{msg}}");
+    window.location="{% url 'Admin:ArtSubType' %}";
 </script>
 {% endif %}
-</html>
+
+{% endblock %}

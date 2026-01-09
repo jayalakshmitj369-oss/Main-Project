@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from Artist.models import *
 from Guest.models import *
 from Admin.models import *
@@ -167,3 +167,7 @@ def ajaxchatview(request):
 def clearchat(request):
     tbl_chat.objects.filter(Q(artist_from=request.session["tid"]) & Q(user_to=request.GET.get("tid")) | (Q(user_from=request.GET.get("tid")) & Q(artist_to=request.session["tid"]))).delete()
     return render(request,"Artist/ClearChat.html",{"msg":"Chat Deleted Sucessfully...."})
+
+def Logout(request):
+    del request.session['tid']
+    return redirect('Guest:Login')

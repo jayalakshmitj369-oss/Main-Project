@@ -1,43 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>District</title>
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="3">
-            <tr>
-                <td>District</td>
-                <td><input type="text" name="txt_districtname" id="txt_districtname" value="{{districtOne.district_name}}"></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" name="btn_submit" value="submit"></td>
-               
-            </tr>
-            </table>
-     </form>
-        <table border="1">
-            <tr>
-                <td>Sl No</td>
-                <td>District</td>
-                <td>Action</td>
-            </tr>
-             {% for i in districtDatas %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.district_name}}</td>
-                <td><a href="{% url 'Admin:DeleteDistrict' i.id %}">Delete</a> | <a href="{% url 'Admin:EditDistrict' i.id %}">Edit</a></td>
-            </tr>
-            {% endfor %}
+
+<style>
+/* ===== Page Wrapper ===== */
+.district-page-wrapper {
+    padding: 30px;
+    background: linear-gradient(135deg, #e3f2fd, #f4faff);
+    min-height: 85vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ===== Title ===== */
+.district-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #0d47a1;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===== Card ===== */
+.district-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 14px 35px rgba(13,71,161,0.18);
+    padding: 25px;
+    margin-bottom: 30px;
+    border-left: 6px solid #1976d2;
+}
+
+/* ===== Form ===== */
+.district-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.district-form-group label {
+    font-weight: 500;
+    color: #0d47a1;
+}
+
+/* ===== Input ===== */
+.district-input {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #bbdefb;
+    font-size: 15px;
+}
+
+.district-input:focus {
+    border-color: #1976d2;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(25,118,210,0.25);
+}
+
+/* ===== Button ===== */
+.district-btn-submit {
+    margin-top: 15px;
+    padding: 12px 32px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #1976d2, #42a5f5);
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.district-btn-submit:hover {
+    box-shadow: 0 10px 25px rgba(25,118,210,0.5);
+    transform: translateY(-2px);
+}
+
+/* ===== Table ===== */
+.district-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.district-table thead {
+    background: linear-gradient(135deg, #1976d2, #0d47a1);
+    color: white;
+}
+
+.district-table th,
+.district-table td {
+    padding: 14px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.district-table tbody tr {
+    border-bottom: 1px solid #e3f2fd;
+}
+
+.district-table tbody tr:hover {
+    background: #e3f2fd;
+}
+
+/* ===== Actions ===== */
+.district-action {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.district-edit {
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    color: white;
+    padding: 7px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.district-delete {
+    background: linear-gradient(135deg, #c62828, #ef5350);
+    color: white;
+    padding: 7px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+</style>
+
+<div class="district-page-wrapper">
+
+    <div class="district-title">📍 District Management</div>
+
+    <div class="district-card">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="district-form-group">
+                <label>District Name</label>
+                <input type="text" name="txt_districtname" class="district-input"
+                       value="{{districtOne.district_name}}" required>
+                <button type="submit" class="district-btn-submit">Save District</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="district-card">
+        <table class="district-table">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>District Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in districtDatas %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.district_name}}</td>
+                    <td>
+                        <div class="district-action">
+                            <a href="{% url 'Admin:EditDistrict' i.id %}" class="district-edit">Edit</a>
+                            <a href="{% url 'Admin:DeleteDistrict' i.id %}" class="district-delete">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No districts found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
-</body>
+    </div>
+
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'Admin:District' %}"
+    alert("{{msg}}");
+    window.location="{% url 'Admin:District' %}";
 </script>
 {% endif %}
-</html>
+
+{% endblock %}

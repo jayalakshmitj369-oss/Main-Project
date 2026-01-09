@@ -2,6 +2,7 @@ from django.urls import path
 from Admin import views
 app_name="Admin"
 urlpatterns = [
+
      path('HomePage/',views.HomePage, name="HomePage"),
 
      path('District/',views.District, name="District"),
@@ -40,6 +41,8 @@ urlpatterns = [
      path('ArtistReject/<int:rid>',views.ArtistReject,name="ArtistReject"),
 
      path('ViewFeedback/',views.ViewFeedback, name="ViewFeedback"),
+     path('Logout/',views.Logout, name="Logout"),
+
 
     
 ]

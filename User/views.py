@@ -263,3 +263,7 @@ def starrating(request):
     result = {"five":five,"four":four,"three":three,"two":two,"one":one,"total_review":ratecount}
     return JsonResponse(result)
 
+def Logout(request):
+    del request.session['uid']
+    return redirect('Guest:Login')
+

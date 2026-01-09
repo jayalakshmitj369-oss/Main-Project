@@ -1,13 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from Admin.models import *
 from Guest.models import *
 from User.models import *
 from Artist.models import *
 
 # Create your views here.
+
 def HomePage(request):
     adminData = tbl_admin.objects.get(id=request.session['aid'])
-    return render(request,'Admin/HomePage.html',{"adminData":adminData})
+    user = tbl_user.objects.all().count()
+    artist = tbl_artist.objects.all().count()
+    return render(request,'Admin/HomePage.html',{"adminData":adminData,"userData":user,"artistData":artist})
 
 def District(request):
     districtDatas = tbl_district.objects.all()
@@ -212,6 +215,9 @@ def ViewFeedback(request):
     userfeedback=tbl_feedback.objects.filter(user_id__in=user)
     return render(request,'Admin/ViewFeedback.html',{'artistfeedback':artistfeedback,'userfeedback':userfeedback})
 
+def Logout(request):
+    del request.session['aid']
+    return redirect('Guest:Login')
 
 
 

@@ -1,42 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Feedback</title>
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Feedback</td>
-                <td>User Name</td>
-            </tr>
-             {% for i in userfeedback %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{i.feedback_content}}</td>
-                <td>{{i.user_id.user_name}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form> <br><br>
-     <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Feedback</td>
-                <td>Artist Name</td>
-            </tr>
-             {% for i in artistfeedback %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{i.feedback_content}}</td>
-                <td>{{i.artist_id.artist_name}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    
-</body>
-</html>
+<div class="page-wrapper">
+    <div class="page-body">
+
+        <!-- ===== PAGE HEADER ===== -->
+        <div class="row mb-4">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body bg-dark text-white">
+                        <h4 class="mb-0">
+                            <i class="ti-comments"></i> Feedback Management
+                        </h4>
+                        <small>View feedback from users and artists</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== USER FEEDBACK ===== -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="ti-user"></i> User Feedback
+                </h5>
+            </div>
+
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th style="width: 60px;">#</th>
+                            <th>Feedback</th>
+                            <th>User Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in userfeedback %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.feedback_content }}</td>
+                            <td>
+                                <span class="badge badge-primary">
+                                    {{ i.user_id.user_name }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-muted text-center">
+                                No user feedback available
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== ARTIST FEEDBACK ===== -->
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="ti-palette"></i> Artist Feedback
+                </h5>
+            </div>
+
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">#</th>
+                            <th>Feedback</th>
+                            <th>Artist Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in artistfeedback %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.feedback_content }}</td>
+                            <td>
+                                <span class="badge badge-warning">
+                                    {{ i.artist_id.artist_name }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-muted text-center">
+                                No artist feedback available
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

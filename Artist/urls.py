@@ -31,9 +31,12 @@ urlpatterns = [
     
 
      path('chatpage/<int:id>',views.chatpage,name="chatpage"),
-    path('ajaxchat/',views.ajaxchat,name="ajaxchat"),
-    path('ajaxchatview/',views.ajaxchatview,name="ajaxchatview"),
-    path('clearchat/',views.clearchat,name="clearchat"),
+     path('ajaxchat/',views.ajaxchat,name="ajaxchat"),
+     path('ajaxchatview/',views.ajaxchatview,name="ajaxchatview"),
+     path('clearchat/',views.clearchat,name="clearchat"),
+
+     path('Logout/',views.Logout, name="Logout"),
+
 
 
 ]

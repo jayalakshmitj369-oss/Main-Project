@@ -1,17 +1,20 @@
 {% extends 'User/Header.html' %}
 {% block content %}
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Complaints</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
+    <title>Complaint</title>
+</head>
 <style>
-/* Full-page dark wrapper */
-.complaint-page-wrapper {
+/* ===== Force full black theme ===== */
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #000 !important;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+}
+
+/* ===== Full-page wrapper ===== */
+.complaint-wrapper {
     min-height: 100vh;
     width: 100%;
     background-color: #000;
@@ -20,56 +23,57 @@
     align-items: center;
     padding: 50px 20px;
     position: relative;
-    font-family: 'Segoe UI', sans-serif;
-    color: #fff;
+    overflow: hidden;
 }
 
-/* Background floating neon shapes */
-.complaint-bg-shape {
+/* ===== Neon floating shapes ===== */
+.complaint-shape {
     position: absolute;
     border-radius: 50%;
-    opacity: 0.2;
-    animation: float 15s infinite;
+    opacity: 0.25;
+    animation: float 14s infinite ease-in-out;
     pointer-events: none;
 }
 
-.complaint-bg-shape.shape1 { width: 250px; height: 250px; background: #0ff; top: -60px; left: -60px; animation-delay: 0s; }
-.complaint-bg-shape.shape2 { width: 200px; height: 200px; background: #f0f; bottom: -50px; right: -50px; animation-delay: 5s; }
-.complaint-bg-shape.shape3 { width: 150px; height: 150px; background: #ff0; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 10s; }
+.complaint-shape.one { width: 250px; height: 250px; background: #0ff; top: -80px; left: -80px; }
+.complaint-shape.two { width: 200px; height: 200px; background: #f0f; bottom: -80px; right: -80px; animation-delay: 5s; }
+.complaint-shape.three { width: 150px; height: 150px; background: #ff0; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 10s; }
 
 @keyframes float {
-    0% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-40px) translateX(40px); }
-    100% { transform: translateY(0) translateX(0); }
+    0% { transform: translate(0,0); }
+    50% { transform: translate(40px,-40px); }
+    100% { transform: translate(0,0); }
 }
 
-/* Complaint form container */
-.complaint-form-container {
+/* ===== Complaint Form ===== */
+.complaint-card {
     z-index: 2;
     width: 100%;
     max-width: 700px;
     background-color: #111;
     border-radius: 25px;
     padding: 40px;
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 50px;
+    box-shadow: 0 0 35px rgba(0, 255, 255, 0.4);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Form header */
-.complaint-form-container h2 {
+/* Form Header */
+.complaint-card h2 {
     text-align: center;
+    font-size: 2.2rem;
+    font-weight: bold;
     color: #0ff;
-    text-shadow: 0 0 10px #0ff;
+    text-shadow: 0 0 15px #0ff;
     margin-bottom: 30px;
 }
 
-/* Inputs & textarea */
+/* Inputs & Textarea */
 .complaint-input, .complaint-textarea {
     width: 100%;
     padding: 15px;
     margin-bottom: 20px;
-    background-color: #000;
+    background: #000;
     color: #0ff;
     border: 1px solid #0ff;
     border-radius: 15px;
@@ -80,10 +84,10 @@
 .complaint-input:focus, .complaint-textarea:focus {
     outline: none;
     border-color: #f0f;
-    box-shadow: 0 0 15px #0ff;
+    box-shadow: 0 0 18px #0ff;
 }
 
-/* Submit button */
+/* Submit Button */
 .complaint-submit-btn {
     width: 100%;
     padding: 15px;
@@ -94,32 +98,33 @@
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 25px rgba(0,255,255,0.7);
+    transition: 0.3s;
 }
 
 .complaint-submit-btn:hover {
     background: linear-gradient(90deg, #f0f, #0ff);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 40px rgba(0,255,255,0.9);
 }
 
+/* ===== Complaints Table ===== */
 .complaint-table-container {
-    z-index: 2;
     width: 100%;
     max-width: 900px;
     overflow-x: auto;
+    z-index: 2;
 }
 
 .complaint-table {
     width: 100%;
     border-collapse: collapse;
+    color: #0ff;
 }
 
 .complaint-table th, .complaint-table td {
-    padding: 15px;
+    padding: 12px;
     border: 1px solid #0ff;
     text-align: center;
-    color: #0ff;
 }
 
 .complaint-table th {
@@ -144,19 +149,26 @@
 .complaint-table a:hover {
     text-decoration: underline;
 }
+
+/* Responsive */
+@media(max-width:576px){
+    .complaint-card {
+        padding: 30px 20px;
+    }
+    .complaint-card h2 {
+        font-size: 1.8rem;
+    }
+}
 </style>
-</head>
 
-<body>
-
-<div class="complaint-page-wrapper">
-    <!-- Background shapes -->
-    <div class="complaint-bg-shape shape1"></div>
-    <div class="complaint-bg-shape shape2"></div>
-    <div class="complaint-bg-shape shape3"></div>
+<div class="complaint-wrapper">
+    <!-- Background Neon Shapes -->
+    <div class="complaint-shape one"></div>
+    <div class="complaint-shape two"></div>
+    <div class="complaint-shape three"></div>
 
     <!-- Complaint Form -->
-    <div class="complaint-form-container">
+    <div class="complaint-card">
         <h2>Submit Your Complaint</h2>
         <form action="" method="POST">
             {% csrf_token %}
@@ -201,8 +213,5 @@
     window.location = "{% url 'User:Complaint' %}";
 </script>
 {% endif %}
-
-</body>
-</html>
 
 {% endblock %}

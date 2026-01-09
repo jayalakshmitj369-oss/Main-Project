@@ -1,40 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User List</title>
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>Name</td>
-                <td>Email</td>
-                <td>Contact</td>
-                <td>Address</td>
-                <td>Photo</td>
-                <td>District</td>
-                <td>Place</td>
-                <td>Action</td>
-            </tr>
-            {% for i in userDatas %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.user_name}}</td>
-                <td>{{i.user_email}}</td>
-                <td>{{i.user_contact}}</td>
-                <td>{{i.user_address}}</td>
-                <td><img src="{{i.user_photo.url}}"  width="150" alt=""></td>
-                <td>{{i.place.district.district_name}}</td>
-                <td>{{i.place.place_name}}</td>
-                <td></td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-    
-</body>
-</html>
+<div class="page-wrapper">
+    <div class="page-body">
+
+        <!-- ===== PAGE TITLE ===== -->
+        <div class="row mb-4">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body bg-info text-white">
+                        <h4 class="mb-0">
+                            <i class="ti-user"></i> Registered Users
+                        </h4>
+                        <small>View all registered users in ART HIVE</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== USER LIST TABLE ===== -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="ti-list"></i> User Details
+                </h5>
+            </div>
+
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>District</th>
+                            <th>Place</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in userDatas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <img src="{{ i.user_photo.url }}" 
+                                     class="img-radius img-40" 
+                                     alt="User Photo">
+                            </td>
+                            <td>{{ i.user_name }}</td>
+                            <td>{{ i.user_email }}</td>
+                            <td>{{ i.user_contact }}</td>
+                            <td>{{ i.user_address }}</td>
+                            <td>{{ i.place.district.district_name }}</td>
+                            <td>{{ i.place.place_name }}</td>
+                            <td>
+                                <span class="badge badge-success">Active</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="text-muted">No users found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

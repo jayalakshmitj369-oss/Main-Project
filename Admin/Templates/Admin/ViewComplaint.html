@@ -1,60 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'Admin/Header.html' %}
+{% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Complaint</title>
 </head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>User Name</td>
-                <td>Email</td>
-                <td>Title</td>
-                <td>Content</td>
-                <td>Date</td>
-                <td>Action</td>
-            </tr>
-             {% for i in complaintData %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{i.user_id.user_name}}</td>
-                <td>{{i.user_id.user_email}}</td>
-                <td>{{i.complaint_title}}</td>
-                <td>{{i.complaint_content}}</td>
-                <td>{{i.complaint_date}}</td>
-                <td><a href="{% url 'Admin:Reply' i.id %}">Reply</a></td>
-            </tr>
-             {% endfor %}
-        </table>
-    </form>
-        <table border="2">
-            <tr>
-                <td>Sl No</td>
-                <td>User Name</td>
-                <td>Email</td>
-                <td>Title</td>
-                <td>Content</td>
-                <td>Date</td>
-                <td>Reply</td>
-            </tr>
-            {% for i in complaintOne %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{i.user_id.user_name}}</td>
-                <td>{{i.user_id.user_email}}</td>
-                <td>{{i.complaint_title}}</td>
-                <td>{{i.complaint_content}}</td>
-                <td>{{i.complaint_date}}</td>
-                <td>{{i.complaint_reply}}</td>
-            </tr>
-            {% endfor %}
-        </table>
+<div class="page-wrapper">
+    <div class="page-body">
 
+        <!-- ===== PAGE HEADER ===== -->
+        <div class="row mb-4">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body bg-danger text-white">
+                        <h4 class="mb-0">
+                            <i class="ti-help-alt"></i> Complaint Management
+                        </h4>
+                        <small>View and reply to user complaints</small>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    
-</body>
-</html>
+        <!-- ===== PENDING COMPLAINTS ===== -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="ti-alert"></i> Pending Complaints
+                </h5>
+            </div>
+
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Title</th>
+                            <th>Complaint</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in complaintData %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.user_id.user_name }}</td>
+                            <td>{{ i.user_id.user_email }}</td>
+                            <td>{{ i.complaint_title }}</td>
+                            <td>{{ i.complaint_content }}</td>
+                            <td>{{ i.complaint_date }}</td>
+                            <td>
+                                <a href="{% url 'Admin:Reply' i.id %}" 
+                                   class="btn btn-primary btn-sm">
+                                    <i class="ti-comment-alt"></i> Reply
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">
+                                No pending complaints
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== REPLIED COMPLAINTS ===== -->
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="ti-check"></i> Replied Complaints
+                </h5>
+            </div>
+
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Title</th>
+                            <th>Complaint</th>
+                            <th>Date</th>
+                            <th>Reply</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in complaintOne %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.user_id.user_name }}</td>
+                            <td>{{ i.user_id.user_email }}</td>
+                            <td>{{ i.complaint_title }}</td>
+                            <td>{{ i.complaint_content }}</td>
+                            <td>{{ i.complaint_date }}</td>
+                            <td>
+                                <span class="badge badge-success">
+                                    {{ i.complaint_reply }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">
+                                No replied complaints
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
