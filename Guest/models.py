@@ -7,8 +7,6 @@ class tbl_user(models.Model):
     user_email = models.CharField(max_length=50)
     user_contact = models.CharField(max_length=50)
     user_address = models.CharField(max_length=50)
-    user_gender = models.CharField(max_length=50)
-    user_dob = models.DateField()
     user_password = models.CharField(max_length=50)
     user_photo = models.FileField(upload_to="Assets/UserDocs/")
     place = models.ForeignKey(tbl_place,on_delete=models.CASCADE)

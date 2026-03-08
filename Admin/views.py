@@ -162,12 +162,12 @@ def ArtType(request):
     arttypeData = tbl_arttype.objects.all()
     if request.method=="POST":
         arttypename=request.POST.get("txt_arttypename")
-        checkarttype=tbl_admin.objects.filter(arttype_name=arttypename).count()
+        checkarttype=tbl_arttype.objects.filter(arttype_name=arttypename).count()
         if checkarttype > 0:
             return render(request,"Admin/ArtType.html",{'msg':"ArtType already existed"})
         else:
             tbl_arttype.objects.create(arttype_name=arttypename)
-            return render(request,'Admin/ArtType.html')
+            return render(request,'Admin/ArtType.html',{'msg':"Art Type Inserted "})
     else:
         return render(request,'Admin/ArtType.html',{'arttypeData':arttypeData})
 

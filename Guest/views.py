@@ -15,8 +15,8 @@ def UserRegistration(request):
         email = request.POST.get("txt_email")
         contact = request.POST.get("txt_contact")
         address = request.POST.get("txt_address")
-        gender = request.POST.get("btn_gender")
-        dob = request.POST.get("txt_dob")
+        # gender = request.POST.get("btn_gender")
+        # dob = request.POST.get("txt_dob")
         district = request.POST.get("txt_district")
 
         place = tbl_place.objects.get(id=request.POST.get("sel_place"))
@@ -29,7 +29,7 @@ def UserRegistration(request):
             return render(request,"Guest/UserRegistration.html",{'msg':"Email already existed"})
         else:
             if password == repassword:
-                tbl_user.objects.create(user_name=name,user_email=email,user_contact=contact,user_address=address,user_gender=gender,user_dob=dob,place=place,user_photo=photo,user_password=password)
+                tbl_user.objects.create(user_name=name,user_email=email,user_contact=contact,user_address=address,place=place,user_photo=photo,user_password=password)
                 return render(request,'Guest/UserRegistration.html',{'msg':"Registration successful"})
             else:
                 return render(request,'Guest/UserRegistration.html',{'msg':"Password mismatch"})

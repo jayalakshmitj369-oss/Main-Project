@@ -1,32 +1,147 @@
 {% extends 'Artist/Header.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amount</title>
-</head>
-<body>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table border="2">
-            <tr>
-                <td>Amount</td>
-                <td><input type="text" name="txt_amount" id="txt_amount" required></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
-            </tr>
-        </table>
-    </form>
-    
-</body>
-</html>
+
+<style>
+/* ===============================
+   ARTIST AMOUNT PAGE STYLES
+================================ */
+
+.artist-amount-wrapper {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 15px;
+    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+}
+
+.artist-amount-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    padding: 35px 30px;
+    animation: artistFadeUp 0.6s ease-in-out;
+}
+
+.artist-amount-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.artist-amount-form-group {
+    margin-bottom: 22px;
+}
+
+.artist-amount-label {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.artist-amount-input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1.5px solid #ccc;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.artist-amount-input:focus {
+    border-color: #ff7a18;
+    box-shadow: 0 0 0 2px rgba(255, 122, 24, 0.2);
+}
+
+.artist-amount-submit {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff7a18, #ffb347);
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artist-amount-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(255, 122, 24, 0.35);
+}
+
+.artist-amount-note {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #777;
+    text-align: center;
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+@keyframes artistFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<div class="artist-amount-wrapper">
+    <div class="artist-amount-card">
+
+        <div class="artist-amount-title">
+            Enter Amount
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="artist-amount-form-group">
+                <label class="artist-amount-label" for="txt_amount">
+                    Amount (₹)
+                </label>
+                <input
+                    type="number"
+                    name="txt_amount"
+                    id="txt_amount"
+                    class="artist-amount-input"
+                    placeholder="Enter amount"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="artist-amount-submit">
+                Submit Amount
+            </button>
+
+            <div class="artist-amount-note">
+                Please enter the final amount for this request
+            </div>
+        </form>
+
+    </div>
+</div>
+
 {% if msg %}
 <script>
-    alert("{{msg}}")
-    window.location="{% url 'Artist:ViewCustomerRequest' %}"
+    alert("{{ msg }}");
+    window.location = "{% url 'Artist:ViewCustomerRequest' %}";
 </script>
 {% endif %}
+
 {% endblock %}

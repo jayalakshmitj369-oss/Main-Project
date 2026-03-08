@@ -70,13 +70,14 @@ def DeleteComplaint(request,did):
     return render(request,'User/Complaint.html',{'msg':'Complaint Deleted Successfully..'})
 
 def ViewArtwork(request):
+    arttypedata=tbl_arttype.objects.filter()
     user = request.session.get("uid")  
     artworkData = tbl_artwork.objects.all()
     liked_artworks = tbl_like.objects.filter(user_id=user).values_list('artwork_id', flat=True)
     for art in artworkData:
         art.like_count = tbl_like.objects.filter(artwork_id=art.id).count()
         art.is_liked = art.id in liked_artworks
-    return render(request, 'User/ViewArtwork.html', {"artworkData": artworkData})
+    return render(request, 'User/ViewArtwork.html', {"artworkData": artworkData,'arttypedata':arttypedata})
 
 
 def ViewArtist(request,id):

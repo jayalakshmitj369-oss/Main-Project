@@ -1,78 +1,83 @@
 {% extends 'User/Header.html' %}
 {% block content %}
-<head>
-    <title>Custom Request</title>
-</head>
+
 <style>
-/* ===== BREAK HEADER CONTAINER ===== */
-.full-width-request {
+/* ===============================
+   FULL WIDTH FIX
+================================ */
+.userreq-fullwidth {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
 }
 
-/* ===== PAGE BACKGROUND ===== */
-.request-page-wrapper {
+/* ===============================
+   PAGE BACKGROUND
+================================ */
+.userreq-page {
     min-height: 100vh;
     padding: 100px 20px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     background:
-        radial-gradient(circle at 0% 35%, rgba(255,0,150,0.35), transparent 45%),
-        radial-gradient(circle at 100% 65%, rgba(0,255,255,0.35), transparent 45%),
+        radial-gradient(circle at 0% 30%, rgba(255,0,150,0.35), transparent 45%),
+        radial-gradient(circle at 100% 70%, rgba(0,255,255,0.35), transparent 45%),
         radial-gradient(circle at 50% 90%, rgba(255,215,0,0.25), transparent 55%),
-        linear-gradient(180deg, #0a0a0a, #0a0a0a);
+        linear-gradient(180deg, #080808, #0a0a0a);
 }
 
-/* ===== FORM CARD ===== */
-.request-art-card {
+/* ===============================
+   CARD
+================================ */
+.userreq-card {
     width: 100%;
-    max-width: 560px;
-    padding: 40px 35px;
-    border-radius: 28px;
-
-    background: linear-gradient(145deg, #0b0b0b, #151515);
+    max-width: 580px;
+    padding: 42px 38px;
+    border-radius: 30px;
+    background: linear-gradient(145deg, #0c0c0c, #161616);
     box-shadow:
         0 30px 60px rgba(0,0,0,0.75),
-        0 0 45px rgba(255,0,150,0.18),
-        0 0 45px rgba(0,255,255,0.18);
-
+        0 0 50px rgba(255,0,150,0.18),
+        0 0 50px rgba(0,255,255,0.18);
     position: relative;
     overflow: hidden;
 }
 
-/* paint glow */
-.request-art-card::before {
+/* Glow decoration */
+.userreq-card::before {
     content: "";
     position: absolute;
     top: -80px;
     right: -80px;
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     background: radial-gradient(circle, #ff0096, transparent 70%);
     opacity: 0.35;
     border-radius: 50%;
 }
 
-/* TITLE */
-.request-title {
+/* ===============================
+   TITLE
+================================ */
+.userreq-title {
     text-align: center;
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 28px;
+    font-weight: 800;
     color: #ffffff;
-    margin-bottom: 35px;
+    margin-bottom: 38px;
+    letter-spacing: 1px;
 }
 
-/* FORM */
-.request-form {
+/* ===============================
+   FORM
+================================ */
+.userreq-form {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 24px;
 }
 
-.request-group label {
+.userreq-group label {
     color: #dddddd;
     font-size: 14px;
     font-weight: 600;
@@ -80,79 +85,97 @@
     display: block;
 }
 
-.request-group textarea,
-.request-group input,
-.request-group select {
+/* Inputs */
+.userreq-group textarea,
+.userreq-group input {
     width: 100%;
     padding: 12px 14px;
     border-radius: 10px;
-
     background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.25);
     color: #ffffff;
-
-    outline: none;
     font-size: 14px;
+    outline: none;
 }
 
-.request-group textarea {
-    resize: vertical;
-    min-height: 90px;
+/* Select FIX */
+.userreq-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #00ffff;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
 }
 
-.request-group input:focus,
-.request-group textarea:focus,
-.request-group select:focus {
+/* Dropdown options */
+.userreq-group select option {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 600;
+}
+
+/* Focus */
+.userreq-group input:focus,
+.userreq-group textarea:focus,
+.userreq-group select:focus {
     border-color: #ff0096;
-    box-shadow: 0 0 0 2px rgba(255,0,150,0.35);
+    box-shadow: 0 0 0 2px rgba(255,0,150,0.4);
 }
 
-/* BUTTON */
-.request-btn {
-    margin-top: 30px;
-    padding: 14px;
+.userreq-group textarea {
+    resize: vertical;
+    min-height: 95px;
+}
+
+/* ===============================
+   BUTTON
+================================ */
+.userreq-submit {
+    margin-top: 28px;
+    padding: 15px;
     border-radius: 999px;
     border: none;
-
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-
     background: linear-gradient(135deg, #ff0096, #00ffff);
     color: #000;
-
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.request-btn:hover {
+.userreq-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(255,0,150,0.45);
+    box-shadow: 0 18px 40px rgba(255,0,150,0.45);
 }
 </style>
 
-<div class="full-width-request">
-    <div class="request-page-wrapper">
+<div class="userreq-fullwidth">
+    <div class="userreq-page">
 
-        <div class="request-art-card">
+        <div class="userreq-card">
 
-            <div class="request-title">
+            <div class="userreq-title">
                 Custom Artwork Request
             </div>
 
-            <form method="POST" enctype="multipart/form-data" class="request-form">
+            <form method="POST" enctype="multipart/form-data" class="userreq-form">
                 {% csrf_token %}
 
-                <div class="request-group">
+                <div class="userreq-group">
                     <label>Describe Your Artwork</label>
-                    <textarea name="txt_details" required></textarea>
+                    <textarea name="txt_details" placeholder="Explain your idea, size, colors..." required></textarea>
                 </div>
 
-                <div class="request-group">
-                    <label>Reference Image (Optional)</label>
+                <div class="userreq-group">
+                    <label>Reference Image</label>
                     <input type="file" name="file_name" accept="image/*" required>
                 </div>
 
-                <div class="request-group">
+                <div class="userreq-group">
                     <label>Art Type</label>
                     <select name="sel_arttype" id="sel_arttype" required>
                         <option value="">-- Select Art Type --</option>
@@ -162,14 +185,14 @@
                     </select>
                 </div>
 
-                <div class="request-group">
+                <div class="userreq-group">
                     <label>Art Subtype</label>
                     <select name="sel_artsubtype" id="sel_artsubtype" required>
                         <option value="">-- Select Art Subtype --</option>
                     </select>
                 </div>
 
-                <button type="submit" class="request-btn">
+                <button type="submit" class="userreq-submit">
                     Submit Request
                 </button>
 
@@ -190,17 +213,17 @@
 <!-- AJAX -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $("#sel_arttype").change(function () {
-        var did = $(this).val();
-        var ur = "{% url 'Artist:AjaxSubtype' %}";
-        $.ajax({
-            url: ur,
-            data: { did: did },
-            success: function (data) {
-                $("#sel_artsubtype").html(data);
-            }
-        });
+$("#sel_arttype").change(function () {
+    var did = $(this).val();
+    var ur = "{% url 'Artist:AjaxSubtype' %}";
+    $.ajax({
+        url: ur,
+        data: { did: did },
+        success: function (data) {
+            $("#sel_artsubtype").html(data);
+        }
     });
+});
 </script>
 
 {% endblock %}
