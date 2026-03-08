@@ -214,5 +214,11 @@ $("#sel_arttype").change(function () {
     });
 });
 </script>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Artist:Artwork' %}";
+</script>
+{% endif %}
 
 {% endblock %}

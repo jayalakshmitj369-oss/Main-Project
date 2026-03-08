@@ -1,0 +1,120 @@
+{% load static %}
+{% block content %}
+<head>
+    <title>OTP Verification</title>
+</head>
+
+<style>
+/* ===== FULL PAGE BACKGROUND ===== */
+.artist-otp-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f472b6, #3b82f6);
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+}
+
+/* ===== CARD ===== */
+.artist-otp-card {
+    background: rgba(0, 0, 0, 0.85);
+    padding: 50px 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.7);
+    text-align: center;
+    color: #fff;
+}
+
+/* ===== TITLE ===== */
+.artist-otp-title {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #f472b6;
+    text-shadow: 0 0 15px rgba(244,114,182,0.6);
+}
+
+/* ===== SUBTEXT ===== */
+.artist-otp-subtitle {
+    font-size: 14px;
+    color: #c7d2fe;
+    margin-bottom: 30px;
+}
+
+/* ===== INPUT ===== */
+.artist-otp-input {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 4px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* ===== BUTTON ===== */
+.artist-otp-btn {
+    width: 100%;
+    padding: 14px;
+    background: #f472b6;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.artist-otp-btn:hover {
+    background: #e11d48;
+}
+
+/* ===== BACK LINK ===== */
+.artist-back-link {
+    display: block;
+    margin-top: 20px;
+    color: #93c5fd;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.artist-back-link:hover {
+    text-decoration: underline;
+}
+</style>
+
+<div class="artist-otp-page">
+    <div class="artist-otp-card">
+        <h1 class="artist-otp-title">OTP Verification</h1>
+        <p class="artist-otp-subtitle">
+            Enter the 6-digit OTP sent to your email
+        </p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="txt_otp" placeholder="••••••"
+                   maxlength="6" required class="artist-otp-input">
+            <input type="submit" value="Verify OTP" class="artist-otp-btn">
+        </form>
+
+        <a href="{% url 'Guest:Forgotpassword' %}" class="artist-back-link">
+            ← Resend OTP
+        </a>
+    </div>
+</div>
+
+{% if msg %}
+<script>
+    alert("{{ msg }}");
+</script>
+{% endif %}
+
+{% endblock %}

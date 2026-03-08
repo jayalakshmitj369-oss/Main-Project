@@ -172,7 +172,7 @@ body, html {
         <h2>Submit Your Complaint</h2>
         <form action="" method="POST">
             {% csrf_token %}
-            <input type="text" class="complaint-input" name="txt_title" placeholder="Title" required>
+            <input type="text" class="complaint-input" name="txt_title" placeholder=" Enter Title" required>
             <textarea class="complaint-textarea" name="txt_content" placeholder="Content" rows="5" required></textarea>
             <input type="submit" class="complaint-submit-btn" value="Submit">
         </form>

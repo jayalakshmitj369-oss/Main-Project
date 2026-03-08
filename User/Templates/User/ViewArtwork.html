@@ -209,7 +209,7 @@
                 <div class="art-price">₹ {{ i.artwork_price }}</div>
 
                 <div class="art-actions">
-                    <a href="{% url 'User:ViewArtist' i.id %}" class="art-btn">Artist</a>
+                    <a href="{% url 'User:ViewArtist' i.artist.id %}" class="art-btn">Artist</a>
                     <a href="{% url 'User:ViewGallery' i.id %}" class="art-btn secondary">Gallery</a>
                     <a href="{% url 'User:BookNow' i.id %}" class="art-btn">Book</a>
 
@@ -267,5 +267,12 @@ $("#search_btn").click(function () {
     });
 });
 </script>
+{% if msg %}
+<script>
+    alert("{{ msg }}");
+    window.location = "{% url 'User:MyBooking' %}";
+</script>
+{% endif %}
 
 {% endblock %}
+

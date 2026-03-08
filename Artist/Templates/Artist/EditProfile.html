@@ -115,6 +115,7 @@ html, body {
                 <label>Name</label>
                 <input type="text" name="txt_name"
                        value="{{artist.artist_name}}"
+                       placeholder="Enter Name"
                        required
                        pattern="^[A-Z]+[a-zA-Z ]*$"
                        title="First letter must be capital">
@@ -122,13 +123,14 @@ html, body {
 
             <div class="artist-editprofile-group">
                 <label>Email</label>
-                <input type="email" name="txt_email"
+                <input type="email" name="txt_email" placeholder="Enter Email"
                        value="{{artist.artist_email}}" required>
             </div>
 
             <div class="artist-editprofile-group">
                 <label>Contact</label>
                 <input type="text" name="txt_contact"
+                       placeholder="Enter Contact Number"
                        value="{{artist.artist_contact}}"
                        pattern="[7-9]{1}[0-9]{9}"
                        title="Valid Indian mobile number" required>
@@ -136,7 +138,7 @@ html, body {
 
             <div class="artist-editprofile-group">
                 <label>Address</label>
-                <input type="text" name="txt_address"
+                <input type="text" name="txt_address" placeholder="Enter Address"
                        value="{{artist.artist_address}}" required>
             </div>
 

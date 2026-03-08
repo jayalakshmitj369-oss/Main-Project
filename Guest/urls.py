@@ -12,4 +12,9 @@ urlpatterns = [
 
     path('ArtistRegistration/',views.ArtistRegistration, name="ArtistRegistration"),
 
+    path('Forgotpassword/',views.Forgotpassword, name="Forgotpassword"),
+
+    path('Newpassword/',views.Newpassword, name="Newpassword"),
+
+    path('Otp/',views.Otp, name="Otp"),
 ]

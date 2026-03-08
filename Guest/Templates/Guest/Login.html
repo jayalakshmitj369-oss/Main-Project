@@ -131,12 +131,13 @@
             <h1 class="artist-lottie-login-title">Login</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                <input type="email" name="txt_email" placeholder="Email" required class="artist-lottie-login-input">
-                <input type="password" name="txt_password" placeholder="Password" required 
+                <input type="email" name="txt_email" placeholder=" Enter your Email" required class="artist-lottie-login-input">
+                <input type="password" name="txt_password" placeholder="Enter your Password" required 
                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
                        title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters" 
                        class="artist-lottie-login-input">
-                <input type="submit" value="Login" class="artist-lottie-login-button">
+                <input type="submit" value="Login" class="artist-lottie-login-button"><br><br>
+                <a href="{% url 'Guest:Forgotpassword' %}">Forgot Password</a>
             </form>
         </div>
     </div>
